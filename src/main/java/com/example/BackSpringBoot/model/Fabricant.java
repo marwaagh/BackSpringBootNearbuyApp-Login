@@ -20,7 +20,7 @@ public class Fabricant{
     private Timestamp ts;
     @Column(name = "AppOwner")
     private String appowner;
-    private String fbcReference;
+    public String fbcReference;
     private String fbcNom;
     private String fbcWebsite;
     private String fbcNomContact;

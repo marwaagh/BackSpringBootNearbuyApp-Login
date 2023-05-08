@@ -18,7 +18,7 @@ public class FamilleComposant{
     @Column(name = "AppOwner")
     private String appowner;
     private String famcmpReference;
-    private String famcmpNom;
+    public String famcmpNom;
     private String famcmpTypeComposant;
     private String famcmpInfo;
     private String famcmpGroupeMovex;

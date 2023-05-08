@@ -151,12 +151,6 @@ public class ArticleController {
         return new ResponseEntity<>(article, HttpStatus.OK) ;
     }
 
-    @GetMapping("/findtype/{artTypeArticle}")
-    public ResponseEntity<List<Article>> getArticlesByType(@PathVariable("artTypeArticle") String artTypeArticle){
-        List<Article> articles = articleService.findArticlesByArtTypeArticle(artTypeArticle);
-        return new ResponseEntity<>(articles, HttpStatus.OK);
-    }
-
     @PostMapping("/add")
     public ResponseEntity<Article> addArticle(@RequestBody Article article){
         Article newArticle = articleService.addArticle(article);

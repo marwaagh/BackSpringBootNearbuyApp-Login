@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="deqss" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e7eebaa4-068b-407f-bf7a-d4c2e72a1292">
+    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Sample DB"/>
+    <style name="Title" fontName="Arial" fontSize="26" isBold="true"/>
+    <style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+    <style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+    <style name="Detail" fontName="Arial" fontSize="12"/>
+
+    <field name="dsequivReference" class="java.lang.String"/>
+    <field name="dsequivDemandeurUser" class="java.lang.String"/>
+    <field name="dsequivValidateurUser" class="java.lang.String"/>
+    <field name="dsequivDateCreation" class="java.util.Date"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="70" splitType="Stretch">
+            <staticText>
+                <reportElement style="Title" x="0" y="13" width="340" height="33" uuid="3eb8e1ab-7e38-4368-89db-62b6501a8c67"/>
+                <textElement verticalAlignment="Middle"/>
+                <text><![CDATA[Dossier d'Equivalence]]></text>
+            </staticText>
+            <staticText>
+                <reportElement style="SubTitle" x="100" y="46" width="174" height="22" uuid="0b5308cc-82cf-49a0-8011-6f875d4c5e32"/>
+                <text><![CDATA[Liste des DEQs]]></text>
+            </staticText>
+        </band>
+    </title>
+    <pageHeader>
+        <band splitType="Stretch"/>
+    </pageHeader>
+    <columnHeader>
+        <band height="36" splitType="Stretch">
+            <line>
+                <reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="d69c6691-e92e-45c5-bf2d-c1dc15dabb91"/>
+                <graphicElement>
+                    <pen lineWidth="0.5" lineColor="#999999"/>
+                </graphicElement>
+            </line>
+
+            <staticText>
+                <reportElement style="Column header" x="111" y="19" width="111" height="15" uuid="9ffbd7fe-0d85-4c88-bbf4-e544d5f260ab">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="edb6d791-6bc1-47d9-b545-b8d18007012d"/>
+                </reportElement>
+                <text><![CDATA[reference]]></text>
+            </staticText>
+            <staticText>
+                <reportElement style="Column header" x="222" y="19" width="111" height="15" uuid="cb0dc309-2faa-4f50-88e4-f6f121b5bc84">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e353939a-28e1-44eb-ae1f-d2b103945b08"/>
+                </reportElement>
+                <text><![CDATA[demandeur]]></text>
+            </staticText>
+            <staticText>
+                <reportElement style="Column header" x="333" y="19" width="111" height="15" uuid="09f06cb5-9d5a-48c0-bd7d-00a8b6b1862a">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c0237bfa-4f3d-4acc-832c-101e2069e07f"/>
+                </reportElement>
+                <text><![CDATA[validateur]]></text>
+            </staticText>
+            <staticText>
+                <reportElement style="Column header" x="444" y="19" width="111" height="15" uuid="47ca4953-1c63-4a3e-81cb-955a8289f3d4">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c3c3d77d-0e8d-4266-b0dd-53dc3090b413"/>
+                </reportElement>
+                <text><![CDATA[date de création]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="16" splitType="Stretch">
+            <line>
+                <reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="f367c019-9cb7-431c-8713-5a96f9b889aa"/>
+                <graphicElement>
+                    <pen lineWidth="0.5" lineColor="#999999"/>
+                </graphicElement>
+            </line>
+
+            <textField>
+                <reportElement style="Detail" x="111" y="0" width="111" height="15" uuid="f84ac233-5c25-4b54-9bbf-7c7c31f1f353">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="edb6d791-6bc1-47d9-b545-b8d18007012d"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{dsequivReference}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement style="Detail" x="222" y="0" width="111" height="15" uuid="f79c05dc-621a-4e1c-b7f6-3c27af49a73c">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e353939a-28e1-44eb-ae1f-d2b103945b08"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{dsequivDemandeurUser}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement style="Detail" x="333" y="0" width="111" height="15" uuid="99a41913-658b-4239-9043-52a6a8a9fd32">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c0237bfa-4f3d-4acc-832c-101e2069e07f"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{dsequivValidateurUser}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement style="Detail" x="444" y="0" width="111" height="15" uuid="d1a54a5d-82e3-48ab-ab04-168f7ef9355e">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c3c3d77d-0e8d-4266-b0dd-53dc3090b413"/>
+                </reportElement>
+                <textFieldExpression><![CDATA[$F{dsequivDateCreation}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band height="45" splitType="Stretch">
+            <line>
+                <reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="02519f40-8679-4e40-a1f1-699bc025a206"/>
+                <graphicElement>
+                    <pen lineWidth="0.5" lineColor="#999999"/>
+                </graphicElement>
+            </line>
+        </band>
+    </columnFooter>
+    <pageFooter>
+        <band height="20" splitType="Stretch">
+            <textField>
+                <reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="6f13e17d-4b46-4ede-ab63-9d2685ec9c16"/>
+                <textElement textAlignment="Right">
+                    <font size="10" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="6857db7e-824a-4cda-b8dc-fe5c95aca145"/>
+                <textElement>
+                    <font size="10" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <textField pattern="EEEEE dd MMMMM yyyy">
+                <reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="ef9fc35f-c45f-4ec6-a5cc-ec2020109ea7"/>
+                <textElement>
+                    <font size="10" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+    <summary>
+        <band splitType="Stretch"/>
+    </summary>
+</jasperReport>
