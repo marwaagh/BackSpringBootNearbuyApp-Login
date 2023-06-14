@@ -44,7 +44,7 @@ public class DossierEquivalence {
     private String dsequivCommentairesDemandeur;
     private String dsequivCommentairesValidateur;
     private String appOwner;
-    @Formula("(SELECT CASE WHEN COUNT( de.id ) = 0 THEN 'non' ELSE 'oui' END FROM dossierequivalence de, dossier_homologation dh, lignenomenclature ln, nomenclature n, sitefctsys sfs WHERE de.id = dh.pk_equivalence_id AND de.id_art_init = ln.article_id AND ln.lnom_est_perennise = 'true' AND ln.nomenclature_id = n.id AND n.nom_decision_perennite = 'c' AND n.site_fct_sys_id = sfs.id AND sfs.stfcsy_decision_perennite = 'p' LIMIT 1)")
+    @Formula("(SELECT CASE WHEN COUNT( de.id ) = 0 THEN 'non' ELSE 'oui' END FROM dossierequivalence de, dossier_homologation dh, lignenomenclature ln, nomenclature n, sitefctsys sfs WHERE de.id = dh.pk_equivalence_id AND de.id_art_init = ln.pk_article_composant_id AND ln.lnom_est_perennise = 'true' AND ln.nomenclature_id = n.id AND n.nom_decision_perennite = 'c' AND n.site_fct_sys_id = sfs.id AND sfs.stfcsy_decision_perennite = 'p' LIMIT 1)")
     private String dsequivFollowedComponent;
     private String dsequivFollowedComponentEquiv;
     private String dsequivEnAttenteValidation;

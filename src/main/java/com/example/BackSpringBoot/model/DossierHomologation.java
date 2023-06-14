@@ -1,6 +1,8 @@
 package com.example.BackSpringBoot.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,12 +29,13 @@ public class DossierHomologation {
     private Timestamp ts;
     private String dshReference;
     private String dshNiveauValidation;
+    @CreationTimestamp
     private Date dshDateNiveauValidation;
     private String dshLienCourierFournisseur;
     private Date dshDateEnvoiDossier;
     private Date dshDateBasculement;
     private Date dshDateStockage;
-    private String dshQteDisponible;
+    private Integer dshQteDisponible;
     private String dshRemarquesClient;
     @CreationTimestamp
     private Date dshDateCreation;
@@ -41,7 +44,7 @@ public class DossierHomologation {
     private String dshLienFichierReponseClient;
     private String dshLienFichierDemande;
     private String appOwner;
-    private Boolean dshDemandeRex;
+    private Boolean dshDemandeRex = true;
     private Long dshQteRex;
     private String dshFollowedComponent;
     private String dshFollowedComponentEquiv;
@@ -50,13 +53,21 @@ public class DossierHomologation {
     private String dshArtEquivInCmde;
     @ManyToOne
     private DossierEquivalence pkEquivalence;
-
-    /* EN RELATION MANY TO ONE AVEC CLIENT SITE
-     * @ManyToOne
-     * private ClientSite pkClientSite;
-     */
     @ManyToOne
+    private ClientSite pkClientSite;
+    @ManyToOne
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JoinColumn(name = "pk_dossier_homologation_origine_id")
     private DossierHomologation pkDossierHomologationOrigine;
+
+    @PostLoad
+    @PostPersist
+    private void generateDsequivReference() {
+        if (this.dshNiveauValidation == null || this.dshNiveauValidation.isEmpty()) {
+            this.dshNiveauValidation = "En attente envoi";
+        }
+        this.dshReference = String.format("DSH0000%d", this.id);
+    }
 
 }
 

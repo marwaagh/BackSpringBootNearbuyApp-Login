@@ -36,25 +36,25 @@ public class AppUser implements UserDetails {
     private String username;
     private String firstName;
     private String lastName;
-    private String email;
+    //private String email;
     private String number;
     private String password;
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
     private Boolean locked = false;
-    private Boolean enabled = false;
+    private Boolean enabled = true;
 
     public AppUser(String username,
                    String firstName,
                    String lastName,
-                   String email,
+                  // String email,
                    String number,
                    String password,
                    AppUserRole appUserRole) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        //this.email = email;
         this.number = number;
         this.password = password;
         this.appUserRole = appUserRole;
@@ -95,13 +95,13 @@ public class AppUser implements UserDetails {
         return appUserRole.name();
     }
 
-    public String getEmail() {
+    /*public String getEmail() {
         return email;
-    }
+    }*/
 
-    public void setEmail(String email) {
+    /*public void setEmail(String email) {
         this.email = email;
-    }
+    }*/
 
     @Override
     public boolean isAccountNonExpired() {

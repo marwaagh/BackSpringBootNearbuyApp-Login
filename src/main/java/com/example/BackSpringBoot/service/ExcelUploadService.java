@@ -58,12 +58,9 @@ public class ExcelUploadService {
                             break;
                         }
                         case 2 -> {
-                            String reference = cell.getStringCellValue();
-                            DossierEquivalence existingDeq = dossierEquivalenceRepository.findByDsequivReference(reference);
-                            if(existingDeq != null){
-                                dossierEquivalenceRepository.delete(existingDeq);
-                            }
-                            deq.setDsequivReference(reference);
+                            //i want to compare this value with the existing Deqs references values and if they exists
+                            // i want to update the deq which have the same reference by the values of the row in the excel file
+                            deq.setDsequivReference(cell.getStringCellValue());
                             break;
                         }
                         case 3 -> deq.setDsequivNiveauValidation(cell.getStringCellValue());

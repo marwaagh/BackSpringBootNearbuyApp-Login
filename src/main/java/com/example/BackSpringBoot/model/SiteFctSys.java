@@ -35,6 +35,7 @@ public class SiteFctSys {
     private String stfcsyLienDecision;
 
     //relation manytoone systeme
-    //relation manytoone clientsite
+    @ManyToOne
+    private ClientSite pkClientSite ;
     //relation manytoone fonction
 }

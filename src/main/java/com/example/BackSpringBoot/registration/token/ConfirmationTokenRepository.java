@@ -22,6 +22,7 @@ public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationT
 
     Optional<ConfirmationToken> findByToken(String token);
 
+/*
     @Transactional
     @Modifying
     @Query("UPDATE ConfirmationToken c " +
@@ -29,4 +30,5 @@ public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationT
             "WHERE c.token = ?1")
     int updateConfirmedAt(String token,
                           LocalDateTime confirmedAt);
+ */
 }

@@ -50,11 +50,12 @@ public class LigneNomenclature {
     private Nomenclature nomenclature;
 
     @ManyToOne
-    private Article article;
+    private Article pkArticleComposant;
 
     @ManyToOne
     private LigneNomenclature ligneNomenclature;
 
-    //Relation manytoone dossiert de validation
-
+    //Relation manytoone dossier de validation type dsh
+    @ManyToOne
+    private DossierHomologation pkDossierValidation;
 }

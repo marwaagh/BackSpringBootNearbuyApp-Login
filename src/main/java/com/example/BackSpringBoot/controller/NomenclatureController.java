@@ -34,4 +34,5 @@ public class NomenclatureController {
         Nomenclature newnomenclature = nomenclatureService.addNomenclature(nomenclature);
         return new ResponseEntity<>(nomenclature, HttpStatus.CREATED) ;
     }
+
 }

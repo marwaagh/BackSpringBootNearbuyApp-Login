@@ -23,24 +23,25 @@ spring:
         format_sql: true
     show-sql: true
 
-  mail:
-    host: smtp.office365.com
-    port: 587 #2525
-    username: marwa.ghodhbane@ensit.u-tunis.tn
-    password: 3ILyjNJk//
-    properties:
-      mail:
-        smtp:
-          ssl:
-            trust: "*"
-          auth: true
-          starttls:
-            enable: true
-          connectiontimeout: 5000
-          timeout: 3000
-          writetimeout: 5000
-  servlet:
-    multipart:
-      max-file-size: 100000000MB
-      max-request-size: 100000000MB
+    mail:
+      host: smtp.office365.com
+      port: 587 #2525
+      username: marwa.ghodhbane@ensit.u-tunis.tn
+      password: 3ILyjNJk//
+      properties: null
+      smtp: null
+      ssl:
+        trust: "*"
+      auth: true
+      starttls:
+        enable: true
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
+
+    servlet:
+      multipart:
+        max-file-size: 50MB
+        max-request-size: 50MB
+
 

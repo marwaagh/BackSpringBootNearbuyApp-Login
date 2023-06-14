@@ -10,7 +10,6 @@ import javax.persistence.Query;
 import javax.persistence.*;
 import java.util.Date;
 import java.sql.Timestamp;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -87,7 +86,7 @@ public class Article{
     private String artLongueur;
     private String artReferenceInitiale;
     private String artCertificatDeConformite;
-    @Formula("(SELECT CASE WHEN COUNT(ln.article_id) = 0 THEN 'non' ELSE 'oui' END FROM article a, lignenomenclature ln, nomenclature n, sitefctsys sfs WHERE ln.article_id = a.id AND ln.lnom_est_perennise = 'true' AND ln.nomenclature_id = n.id AND n.nom_decision_perennite = 'c' AND n.site_fct_sys_id = sfs.id AND sfs.stfcsy_decision_perennite = 'p' LIMIT 1 )")
+    @Formula("(SELECT CASE WHEN COUNT(ln.pk_article_composant_id) = 0 THEN 'non' ELSE 'oui' END FROM article a, lignenomenclature ln, nomenclature n, sitefctsys sfs WHERE ln.pk_article_composant_id = a.id AND ln.lnom_est_perennise = 'true' AND ln.nomenclature_id = n.id AND n.nom_decision_perennite = 'c' AND n.site_fct_sys_id = sfs.id AND sfs.stfcsy_decision_perennite = 'p' LIMIT 1 )")
     private String artFollowedComponent;
     @ManyToOne
     @JoinColumn(name = "serie_id")

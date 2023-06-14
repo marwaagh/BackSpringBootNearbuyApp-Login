@@ -15,6 +15,4 @@ public interface DossierEquivalenceRepository extends JpaRepository<DossierEquiv
 
     Optional<DossierEquivalence> findById(Long id);
     void deleteDossierEquivalenceById(Long id);
-
-    DossierEquivalence findByDsequivReference(String dsequivReference);
 }

@@ -9,13 +9,11 @@ import com.example.BackSpringBoot.appuser.AppUserService;
 import com.example.BackSpringBoot.exception.ResourceNotFoundException;
 import com.example.BackSpringBoot.registration.token.ConfirmationToken;
 import com.example.BackSpringBoot.registration.token.ConfirmationTokenRepository;
-import com.example.BackSpringBoot.security.PasswordEncoder;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -50,9 +48,9 @@ public class RegistrationController {
 
     //register user (add user)
     @PostMapping
-    public void register(@RequestBody RegistrationRequest request) {
-        //return registrationService.register(request);
-        registrationService.register(request);
+    public String register(@RequestBody RegistrationRequest request) {
+        return registrationService.register(request);
+        //registrationService.register(request);
     }
 
     @GetMapping("appUser/find/{firstname}")
@@ -97,7 +95,7 @@ public class RegistrationController {
         updateAppUser.setUsername(appUserDetails.getUsername());
         updateAppUser.setFirstName(appUserDetails.getFirstName());
         updateAppUser.setLastName(appUserDetails.getLastName());
-        updateAppUser.setEmail(appUserDetails.getEmail());
+        //updateAppUser.setEmail(appUserDetails.getEmail());
         updateAppUser.setNumber(appUserDetails.getNumber());
         updateAppUser.setPassword(bCryptPasswordEncoder.encode(appUserDetails.getPassword()));
        /* updateAppUser.setAppUserRole(AppUserRole.USER);

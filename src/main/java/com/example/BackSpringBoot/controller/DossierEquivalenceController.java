@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -100,12 +99,13 @@ public class DossierEquivalenceController {
         DossierEquivalence newDEQ = dossierEquivalenceService.addDossierEquivalence(dossierEquivalence);
         return new ResponseEntity<>(newDEQ, HttpStatus.CREATED);
     }
+    //update from excel file
     @PostMapping("/addFromExcel")
     public ResponseEntity<List<DossierEquivalence>> uploadDeqData(@RequestParam("file") MultipartFile file) throws IOException {
         List<DossierEquivalence> deqs = dossierEquivalenceService.addDossierEquivalencesFromExcelFile(file);
         return new ResponseEntity<>(deqs, HttpStatus.CREATED);
     }
-
+//list of deqs to excel file
     @GetMapping("/exporttoexcel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
         String fileName = "deqs.xlsx";
