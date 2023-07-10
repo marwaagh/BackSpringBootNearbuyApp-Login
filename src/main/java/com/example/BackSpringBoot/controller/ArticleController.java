@@ -1,5 +1,6 @@
 package com.example.BackSpringBoot.controller;
 
+import com.example.BackSpringBoot.LOVElements.LOVElement;
 import com.example.BackSpringBoot.exception.ResourceNotFoundException;
 import com.example.BackSpringBoot.model.*;
 import com.example.BackSpringBoot.repository.ArticleRepository;
@@ -7,6 +8,7 @@ import com.example.BackSpringBoot.repository.FabricantRepository;
 import com.example.BackSpringBoot.repository.FamilleComposantRepository;
 import com.example.BackSpringBoot.service.ArticleService;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,7 +77,7 @@ public class ArticleController {
                 article.setArtSource((String) articleData.get("art_source_changement_couleur"));
                 article.setArtLienDocAvisObsolescence((String) articleData.get("art_lien_doc_avis_obsolescence"));
                 article.setArtDesignation((String) articleData.get("art_designation"));
-                article.setAusrName((String) articleData.get("ausr_name"));
+                article.setAppOwner((String) articleData.get("ausr_name"));
                 article.setArtBoitier((String) articleData.get("art_boitier"));
                 article.setArtPins((String) articleData.get("art_pins"));
                 article.setArtGenerique((String) articleData.get("art_generique"));
@@ -159,22 +161,14 @@ public class ArticleController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Article> updateArticle(@PathVariable long id, @RequestBody Article article){
-        Article updateArticle = articleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Article not exist with id: " + id));
-        updateArticle.setArtReference(article.getArtReference());
-        updateArticle.setArtBoitier(article.getArtBoitier());
-        updateArticle.setArtCouleurPrecedente(article.getArtCouleurPrecedente());
-        updateArticle.setArtCouleur(article.getArtCouleur());
-        updateArticle.setArtTypeArticle(article.getArtTypeArticle());
-        updateArticle.setArtLboDate(article.getArtLboDate());
-        //updateArticle.setFabricant(article.getFabricant());
-        //updateArticle.setArtSerie(article.getArtSerie());
-        //updateArticle.setFamilleComposant(article.getFamilleComposant());
-        //updateArticle.setArtTypeComposant(article.getArtTypeComposant());
-        //updateArticle.setArtSerie(article.getArtSerie());
+        Article existingArticle = articleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("article does not exist with id: " + id));
 
-        articleRepository.save(updateArticle) ;
-        return new ResponseEntity<>(updateArticle, HttpStatus.OK) ;
-        // return "user updated !!!!";
+        // Copy only the provided properties while ignoring null or default values
+        BeanUtils.copyProperties(article, existingArticle, ArticleService.getNullPropertyNames(article));
+
+        Article updatedArticle = articleRepository.save(existingArticle);
+        return new ResponseEntity<>(updatedArticle, HttpStatus.OK);
     }
 
 

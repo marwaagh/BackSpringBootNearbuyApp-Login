@@ -1,5 +1,8 @@
 package com.example.BackSpringBoot.model;
 
+import com.example.BackSpringBoot.LOVElements.LOVElement;
+import com.example.BackSpringBoot.LOVElements.TypeComposant;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
@@ -8,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Timestamp;
 
@@ -15,8 +19,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = "article")
-public class Article{
-
+public class Article {
     @Id
     @GeneratedValue
     private Long id;
@@ -34,7 +37,7 @@ public class Article{
     private String artSource;
     private String artLienDocAvisObsolescence;
     private String artDesignation;
-    private String ausrName;
+    private String appOwner;
     private String artBoitier;
     private String artPins;
     private String artGenerique;
@@ -89,6 +92,7 @@ public class Article{
     @Formula("(SELECT CASE WHEN COUNT(ln.pk_article_composant_id) = 0 THEN 'non' ELSE 'oui' END FROM article a, lignenomenclature ln, nomenclature n, sitefctsys sfs WHERE ln.pk_article_composant_id = a.id AND ln.lnom_est_perennise = 'true' AND ln.nomenclature_id = n.id AND n.nom_decision_perennite = 'c' AND n.site_fct_sys_id = sfs.id AND sfs.stfcsy_decision_perennite = 'p' LIMIT 1 )")
     private String artFollowedComponent;
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "serie_id")
     private Article artSerie ;
     @ManyToOne
@@ -104,540 +108,47 @@ public class Article{
     @JoinColumn(name = "id_codeINC")
     private CodeINC codeINC;
 
-
-    public Article getArtSerie() {
-        return artSerie;
-    }
-
-    public void setArtSerie(Article artSerie) {
-        this.artSerie = artSerie;
-    }
-    public String getArtReference() {
-        return artReference;
-    }
-
-    public void setArtReference(String artReference) {
-        this.artReference = artReference;
-    }
-
-    public String getArtTypeArticle() {
-        return artTypeArticle;
-    }
-
-    public void setArtTypeArticle(String artTypeArticle) {
-        this.artTypeArticle = artTypeArticle;
-    }
-
-    public String getArtTypeComposant() {
-        return artTypeComposant;
-    }
-
-    public void setArtTypeComposant(String artTypeComposant) {
-        this.artTypeComposant = artTypeComposant;
-    }
-
-    public Long getArtCycleVie() {
-        return artCycleVie;
-    }
-
-    public void setArtCycleVie(Long artCycleVie) {
-        this.artCycleVie = artCycleVie;
-    }
-
-    public String getArtCouleur() {
-        return artCouleur;
-    }
+    /*public static ArrayList<Integer[]> getStatusCheckIntervals(String typeComposant) {
+        ArrayList<Integer[]> checkIntervals = new ArrayList<Integer[]>();
+        if(TypeComposant.ACTIF.key.equals(typeComposant)){
+            checkIntervals.add(new Integer[]{10000, 30});
+            checkIntervals.add(new Integer[]{29, 24});
+            checkIntervals.add(new Integer[]{23, 18});
+            checkIntervals.add(new Integer[]{17, 12});
+            checkIntervals.add(new Integer[]{11, 6});
+            checkIntervals.add(new Integer[]{5, 0});
+        }else if(TypeComposant.PASSIF.key.equals(typeComposant) || TypeComposant.PARTICULIER.key.equals(typeComposant)){
+            checkIntervals.add(new Integer[]{10000, 179});
+            checkIntervals.add(new Integer[]{178, 144});
+            checkIntervals.add(new Integer[]{143, 108});
+            checkIntervals.add(new Integer[]{107, 72});
+            checkIntervals.add(new Integer[]{71, 36});
+            checkIntervals.add(new Integer[]{35, 0});
+        }else if (TypeComposant.COTS.key.equals(typeComposant)){
+            checkIntervals.add(new Integer[]{10000, 365});
+            checkIntervals.add(new Integer[]{364, 144});
+            checkIntervals.add(new Integer[]{143, 108});
+            checkIntervals.add(new Integer[]{107, 72});
+            checkIntervals.add(new Integer[]{71, 36});
+            checkIntervals.add(new Integer[]{35, 0});
+        }else if (TypeComposant.MECANIQUE.key.equals(typeComposant)){
+            checkIntervals.add(new Integer[]{10000, 365});
+            checkIntervals.add(new Integer[]{364, 144});
+            checkIntervals.add(new Integer[]{143, 108});
+            checkIntervals.add(new Integer[]{107, 72});
+            checkIntervals.add(new Integer[]{71, 36});
+            checkIntervals.add(new Integer[]{35, 0});
+        }
+        return checkIntervals;
+    }*/
 
     public void setArtCouleur(String artCouleur) {
+        this.artCouleurPrecedente = this.artCouleur;
+        this.artDateCouleurPrecedente = this.artDateCouleur;
         this.artCouleur = artCouleur;
+        this.artDateCouleur = new Date(); // Update artDatecouleur with current date/time
     }
 
-    public Date getArtDateCouleur() {
-        return artDateCouleur;
-    }
-
-    public void setArtDateCouleur(Date artDateCouleur) {
-        this.artDateCouleur = artDateCouleur;
-    }
-
-    public String getArtCouleurPrecedente() {
-        return artCouleurPrecedente;
-    }
-
-    public void setArtCouleurPrecedente(String artCouleurPrecedente) {
-        this.artCouleurPrecedente = artCouleurPrecedente;
-    }
-
-    public Date getArtDateCouleurPrecedente() {
-        return artDateCouleurPrecedente;
-    }
-
-    public void setArtDateCouleurPrecedente(Date artDateCouleurPrecedente) {
-        this.artDateCouleurPrecedente = artDateCouleurPrecedente;
-    }
-
-    public String getArtSourceChangementCouleur() {
-        return artSourceChangementCouleur;
-    }
-
-    public void setArtSourceChangementCouleur(String artSourceChangementCouleur) {
-        this.artSourceChangementCouleur = artSourceChangementCouleur;
-    }
-
-    public String getArtSource() {
-        return artSource;
-    }
-
-    public void setArtSource(String artSource) {
-        this.artSource = artSource;
-    }
-
-    public String getArtLienDocAvisObsolescence() {
-        return artLienDocAvisObsolescence;
-    }
-
-    public void setArtLienDocAvisObsolescence(String artLienDocAvisObsolescence) {
-        this.artLienDocAvisObsolescence = artLienDocAvisObsolescence;
-    }
-
-    public String getArtDesignation() {
-        return artDesignation;
-    }
-
-    public void setArtDesignation(String artDesignation) {
-        this.artDesignation = artDesignation;
-    }
-
-    public String getAusrName() {
-        return ausrName;
-    }
-
-    public void setAusrName(String ausrName) {
-        this.ausrName = ausrName;
-    }
-
-    public String getArtBoitier() {
-        return artBoitier;
-    }
-
-    public void setArtBoitier(String artBoitier) {
-        this.artBoitier = artBoitier;
-    }
-
-    public String getArtPins() {
-        return artPins;
-    }
-
-    public void setArtPins(String artPins) {
-        this.artPins = artPins;
-    }
-
-    public String getArtGenerique() {
-        return artGenerique;
-    }
-
-    public void setArtGenerique(String artGenerique) {
-        this.artGenerique = artGenerique;
-    }
-
-    public Long getArtCycleVieGenerique() {
-        return artCycleVieGenerique;
-    }
-
-    public void setArtCycleVieGenerique(Long artCycleVieGenerique) {
-        this.artCycleVieGenerique = artCycleVieGenerique;
-    }
-
-    public Long getArtEquivalentPotentiels() {
-        return artEquivalentPotentiels;
-    }
-
-    public void setArtEquivalentPotentiels(Long artEquivalentPotentiels) {
-        this.artEquivalentPotentiels = artEquivalentPotentiels;
-    }
-
-    public String getArtNcage() {
-        return artNcage;
-    }
-
-    public void setArtNcage(String artNcage) {
-        this.artNcage = artNcage;
-    }
-
-    public String getArtNno() {
-        return artNno;
-    }
-
-    public void setArtNno(String artNno) {
-        this.artNno = artNno;
-    }
-
-    public String getArtRohs() {
-        return artRohs;
-    }
-
-    public void setArtRohs(String artRohs) {
-        this.artRohs = artRohs;
-    }
-
-    public String getArtRohsMsl() {
-        return artRohsMsl;
-    }
-
-    public void setArtRohsMsl(String artRohsMsl) {
-        this.artRohsMsl = artRohsMsl;
-    }
-
-    public String getArtRohsPeakReflow() {
-        return artRohsPeakReflow;
-    }
-
-    public void setArtRohsPeakReflow(String artRohsPeakReflow) {
-        this.artRohsPeakReflow = artRohsPeakReflow;
-    }
-
-    public String getArtRohsFinishType() {
-        return artRohsFinishType;
-    }
-
-    public void setArtRohsFinishType(String artRohsFinishType) {
-        this.artRohsFinishType = artRohsFinishType;
-    }
-    public Date getArtDateCreation() {
-        return artDateCreation;
-    }
-    public void setArtDateCreation(Date artDateCreation) {
-        this.artDateCreation = artDateCreation;
-    }
-    public Date getArtLboDate() {
-        return artLboDate;
-    }
-    public void setArtLboDate(Date artLboDate) {
-        this.artLboDate = artLboDate;
-    }
-    public String getArtTechnologie() {
-        return artTechnologie;
-    }
-    public void setArtTechnologie(String artTechnologie) {
-        this.artTechnologie = artTechnologie;
-    }
-    public String getArtCodeConstructeur() {
-        return artCodeConstructeur;
-    }
-    public void setArtCodeConstructeur(String artCodeConstructeur) {
-        this.artCodeConstructeur = artCodeConstructeur;
-    }
-    public String getArtLeadFramePlating() {
-        return artLeadFramePlating;
-    }
-    public void setArtLeadFramePlating(String artLeadFramePlating) {
-        this.artLeadFramePlating = artLeadFramePlating;
-    }
-    public String getArtCarteSn() {
-        return artCarteSn;
-    }
-    public void setArtCarteSn(String artCarteSn) {
-        this.artCarteSn = artCarteSn;
-    }
-    public String getArtCarteIndice() {
-        return artCarteIndice;
-    }
-    public void setArtCarteIndice(String artCarteIndice) {
-        this.artCarteIndice = artCarteIndice;
-    }
-    public String getArtCarteVersion() {
-        return artCarteVersion;
-    }
-    public void setArtCarteVersion(String artCarteVersion) {
-        this.artCarteVersion = artCarteVersion;
-    }
-    public String getArtInformations() {
-        return artInformations;
-    }
-
-    public void setArtInformations(String artInformations) {
-        this.artInformations = artInformations;
-    }
-
-    public String getArtItar() {
-        return artItar;
-    }
-
-    public void setArtItar(String artItar) {
-        this.artItar = artItar;
-    }
-
-    public String getArtItarPays() {
-        return artItarPays;
-    }
-
-    public void setArtItarPays(String artItarPays) {
-        this.artItarPays = artItarPays;
-    }
-
-    public String getArtItarEccn() {
-        return artItarEccn;
-    }
-
-    public void setArtItarEccn(String artItarEccn) {
-        this.artItarEccn = artItarEccn;
-    }
-
-    public String getArtItarUsml() {
-        return artItarUsml;
-    }
-
-    public void setArtItarUsml(String artItarUsml) {
-        this.artItarUsml = artItarUsml;
-    }
-
-    public String getArtItarMde() {
-        return artItarMde;
-    }
-
-    public void setArtItarMde(String artItarMde) {
-        this.artItarMde = artItarMde;
-    }
-
-    public Date getArtItarDateMaj() {
-        return artItarDateMaj;
-    }
-
-    public void setArtItarDateMaj(Date artItarDateMaj) {
-        this.artItarDateMaj = artItarDateMaj;
-    }
-
-    public String getArtReachItemWeight() {
-        return artReachItemWeight;
-    }
-
-    public void setArtReachItemWeight(String artReachItemWeight) {
-        this.artReachItemWeight = artReachItemWeight;
-    }
-
-    public String getArtReachSvhcPresence() {
-        return artReachSvhcPresence;
-    }
-
-    public void setArtReachSvhcPresence(String artReachSvhcPresence) {
-        this.artReachSvhcPresence = artReachSvhcPresence;
-    }
-
-    public String getArtReachSvhcList() {
-        return artReachSvhcList;
-    }
-
-    public void setArtReachSvhcList(String artReachSvhcList) {
-        this.artReachSvhcList = artReachSvhcList;
-    }
-
-    public String getArtReachSource() {
-        return artReachSource;
-    }
-
-    public void setArtReachSource(String artReachSource) {
-        this.artReachSource = artReachSource;
-    }
-
-    public String getArtReachCasAccountedForWeight() {
-        return artReachCasAccountedForWeight;
-    }
-
-    public void setArtReachCasAccountedForWeight(String artReachCasAccountedForWeight) {
-        this.artReachCasAccountedForWeight = artReachCasAccountedForWeight;
-    }
-
-    public String getArtReachPdslPresence() {
-        return artReachPdslPresence;
-    }
-
-    public void setArtReachPdslPresence(String artReachPdslPresence) {
-        this.artReachPdslPresence = artReachPdslPresence;
-    }
-
-    public String getArtReachPdslList() {
-        return artReachPdslList;
-    }
-
-    public void setArtReachPdslList(String artReachPdslList) {
-        this.artReachPdslList = artReachPdslList;
-    }
-
-    public Date getArtReachDateMaj() {
-        return artReachDateMaj;
-    }
-
-    public void setArtReachDateMaj(Date artReachDateMaj) {
-        this.artReachDateMaj = artReachDateMaj;
-    }
-
-    public String getArtReachConflictMineral() {
-        return artReachConflictMineral;
-    }
-
-    public void setArtReachConflictMineral(String artReachConflictMineral) {
-        this.artReachConflictMineral = artReachConflictMineral;
-    }
-
-    public String getArtLienDatasheet() {
-        return artLienDatasheet;
-    }
-
-    public void setArtLienDatasheet(String artLienDatasheet) {
-        this.artLienDatasheet = artLienDatasheet;
-    }
-
-    public String getArtLienJustificatif() {
-        return artLienJustificatif;
-    }
-
-    public void setArtLienJustificatif(String artLienJustificatif) {
-        this.artLienJustificatif = artLienJustificatif;
-    }
-
-    public String getArtReachLienDisclosure() {
-        return artReachLienDisclosure;
-    }
-
-    public void setArtReachLienDisclosure(String artReachLienDisclosure) {
-        this.artReachLienDisclosure = artReachLienDisclosure;
-    }
-
-    public String getArtReachLienCOFC() {
-        return artReachLienCOFC;
-    }
-
-    public void setArtReachLienCOFC(String artReachLienCOFC) {
-        this.artReachLienCOFC = artReachLienCOFC;
-    }
-
-    public String getArtReachLienEICCTemplate() {
-        return artReachLienEICCTemplate;
-    }
-
-    public void setArtReachLienEICCTemplate(String artReachLienEICCTemplate) {
-        this.artReachLienEICCTemplate = artReachLienEICCTemplate;
-    }
-
-    public String getArtNRFND() {
-        return artNRFND;
-    }
-
-    public void setArtNRFND(String artNRFND) {
-        this.artNRFND = artNRFND;
-    }
-
-    public String getArtItarManufacturerRemarks() {
-        return artItarManufacturerRemarks;
-    }
-
-    public void setArtItarManufacturerRemarks(String artItarManufacturerRemarks) {
-        this.artItarManufacturerRemarks = artItarManufacturerRemarks;
-    }
-
-    public String getArtItarIhsRemarks() {
-        return artItarIhsRemarks;
-    }
-
-    public void setArtItarIhsRemarks(String artItarIhsRemarks) {
-        this.artItarIhsRemarks = artItarIhsRemarks;
-    }
-
-    public String getArtItarAutre() {
-        return artItarAutre;
-    }
-
-    public void setArtItarAutre(String artItarAutre) {
-        this.artItarAutre = artItarAutre;
-    }
-
-    public String getArtItarClassificationEU() {
-        return artItarClassificationEU;
-    }
-
-    public void setArtItarClassificationEU(String artItarClassificationEU) {
-        this.artItarClassificationEU = artItarClassificationEU;
-    }
-
-    public String getArtFrequenceConsultation() {
-        return artFrequenceConsultation;
-    }
-
-    public void setArtFrequenceConsultation(String artFrequenceConsultation) {
-        this.artFrequenceConsultation = artFrequenceConsultation;
-    }
-
-    public String getArtReferenceMaAERO() {
-        return artReferenceMaAERO;
-    }
-
-    public void setArtReferenceMaAERO(String artReferenceMaAERO) {
-        this.artReferenceMaAERO = artReferenceMaAERO;
-    }
-
-    public String getArtDiametre() {
-        return artDiametre;
-    }
-
-    public void setArtDiametre(String artDiametre) {
-        this.artDiametre = artDiametre;
-    }
-
-    public String getArtLongueur() {
-        return artLongueur;
-    }
-
-    public void setArtLongueur(String artLongueur) {
-        this.artLongueur = artLongueur;
-    }
-
-    public String getArtReferenceInitiale() {
-        return artReferenceInitiale;
-    }
-
-    public void setArtReferenceInitiale(String artReferenceInitiale) {
-        this.artReferenceInitiale = artReferenceInitiale;
-    }
-
-    public String getArtCertificatDeConformite() {
-        return artCertificatDeConformite;
-    }
-
-    public void setArtCertificatDeConformite(String artCertificatDeConformite) {
-        this.artCertificatDeConformite = artCertificatDeConformite;
-    }
-
-    public Fabricant getFabricant() {
-        return fabricant;
-    }
-
-    public void setFabricant(Fabricant fabricant) {
-        this.fabricant = fabricant;
-    }
-
-    public Norme getNorme() {
-        return norme;
-    }
-
-    public void setNorme(Norme norme) {
-        this.norme = norme;
-    }
-
-    public FamilleComposant getFamilleComposant() {
-        return familleComposant;
-    }
-
-    public void setFamilleComposant(FamilleComposant familleComposant) {
-        this.familleComposant = familleComposant;
-    }
-
-    public CodeINC getCodeINC() {
-        return codeINC;
-    }
-
-    public void setCodeINC(CodeINC codeINC) {
-        this.codeINC = codeINC;
-    }
 
     public Article(String artReference,
                    String artTypeArticle,
@@ -709,7 +220,7 @@ public class Article{
                    FamilleComposant familleComposant) {
         this.artReference = artReference;
         this.artTypeArticle = artTypeArticle;
-        this.artTypeComposant = artTypeComposant;
+        this.artTypeComposant = TypeComposant.ACTIF.key;
         this.artCycleVie = artCycleVie;
         this.artCouleur = artCouleur;
         this.artDateCouleur = artDateCouleur;
@@ -719,7 +230,7 @@ public class Article{
         this.artSource = artSource;
         this.artLienDocAvisObsolescence = artLienDocAvisObsolescence;
         this.artDesignation = artDesignation;
-        this.ausrName = ausrName;
+        this.appOwner = ausrName;
         this.artBoitier = artBoitier;
         this.artPins = artPins;
         this.artGenerique = artGenerique;

@@ -1,5 +1,7 @@
 package com.example.BackSpringBoot.controller;
 
+import com.example.BackSpringBoot.exception.ResourceNotFoundException;
+import com.example.BackSpringBoot.model.Client;
 import com.example.BackSpringBoot.model.Fabricant;
 import com.example.BackSpringBoot.model.SiteFctSys;
 import com.example.BackSpringBoot.repository.FabricantRepository;
@@ -29,6 +31,12 @@ public class SiteFctSysController {
     public ResponseEntity<List<SiteFctSys>> getAllSiteFctSys(){
         List<SiteFctSys> sitefctsyss = siteFctSysRepository.findAll();
         return new ResponseEntity<>(sitefctsyss, HttpStatus.OK) ;
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<SiteFctSys> getSiteFctSys(@PathVariable long id){
+        SiteFctSys siteFctSys = siteFctSysRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Site fct sys not exist with id: " + id));
+        return new ResponseEntity<>(siteFctSys, HttpStatus.OK) ;
     }
 
     @PostMapping("/add")

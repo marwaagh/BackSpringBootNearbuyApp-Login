@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Liste_homologation" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoPages" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="22ddcbfe-0595-4e01-abe5-f07da9ed553b">
+    <property name="ireport.scriptlethandling" value="0"/>
+    <property name="ireport.encoding" value="UTF-8"/>
+    <import value="net.sf.jasperreports.engine.*"/>
+    <import value="java.util.*"/>
+    <import value="net.sf.jasperreports.engine.data.*"/>
+    <style name="ACT_Fct_Couleur" forecolor="#333333">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean ($F{pkEquivalence.pkArticleInitial.artCouleur}.compareTo("jaune")==0)]]></conditionExpression>
+            <style mode="Opaque" forecolor="#333333" backcolor="#FFFF00"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean ($F{pkEquivalence.pkArticleInitial.artCouleur}.compareTo("vert")==0)]]></conditionExpression>
+            <style mode="Opaque" forecolor="#333333" backcolor="#66FF00"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean ($F{pkEquivalence.pkArticleInitial.artCouleur}.compareTo("orange")==0)]]></conditionExpression>
+            <style mode="Opaque" forecolor="#333333" backcolor="#FF9900"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean ($F{pkEquivalence.pkArticleInitial.artCouleur}.compareTo("rouge")==0)]]></conditionExpression>
+            <style mode="Opaque" forecolor="#333333" backcolor="#FF0000"/>
+        </conditionalStyle>
+    </style>
+    <style name="Couleur_equiv" backcolor="#FFFFFF">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean ($F{pkEquivalence.pkArticleEquivalent.artCouleur}.compareTo("jaune")==0)]]></conditionExpression>
+            <style mode="Opaque" backcolor="#FFFF00"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean ($F{pkEquivalence.pkArticleEquivalent.artCouleur}.compareTo("vert")==0)]]></conditionExpression>
+            <style mode="Opaque" backcolor="#66FF00"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean ($F{pkEquivalence.pkArticleEquivalent.artCouleur}.compareTo("orange")==0)]]></conditionExpression>
+            <style mode="Opaque" backcolor="#FF9900"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean ($F{pkEquivalence.pkArticleEquivalent.artCouleur}.compareTo("rouge")==0)]]></conditionExpression>
+            <style mode="Opaque" backcolor="#FF0000"/>
+        </conditionalStyle>
+    </style>
+    <style name="St_Couleur_DSH" mode="Opaque">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{dshNiveauValidation}.compareTo("En attente validation") == 0)]]></conditionExpression>
+            <style mode="Opaque" backcolor="#FF9966"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{dshNiveauValidation}.compareTo("Validé sans réserve") == 0)]]></conditionExpression>
+            <style mode="Opaque" backcolor="#00FF33"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{dshNiveauValidation}.compareTo("Validé avec réserve") == 0)]]></conditionExpression>
+            <style mode="Opaque" backcolor="#FFFF33"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{dshNiveauValidation}.compareTo("Refusé") == 0)]]></conditionExpression>
+            <style mode="Opaque" backcolor="#FF6666"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{dshNiveauValidation}.compareTo("En attente envoi") == 0)]]></conditionExpression>
+            <style mode="Opaque"/>
+        </conditionalStyle>
+    </style>
+    <style name="St_Couleur_EQU">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{pkEquivalence.dsequivNiveauValidation}.compareTo("En attente validation") == 0)]]></conditionExpression>
+            <style mode="Opaque" backcolor="#FF9966"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{pkEquivalence.dsequivNiveauValidation}.compareTo("En attente envoi") == 0)]]></conditionExpression>
+            <style mode="Opaque"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{pkEquivalence.dsequivNiveauValidation}.compareTo("Validé sans réserve") == 0)]]></conditionExpression>
+            <style mode="Opaque" backcolor="#66FF66"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{pkEquivalence.dsequivNiveauValidation}.compareTo("Validé avec réserve") == 0)]]></conditionExpression>
+            <style mode="Opaque" backcolor="#FFFF66"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA[new Boolean($F{pkEquivalence.dsequivNiveauValidation}.compareTo("Refusé") == 0)]]></conditionExpression>
+            <style mode="Opaque" backcolor="#FF6666"/>
+        </conditionalStyle>
+    </style>
+    <parameter name="BAS_AUTEUR" class="java.lang.String" isForPrompting="false">
+        <defaultValueExpression><![CDATA["Gregory Maurel"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="HAUT_LOGO_CLIENT" class="java.lang.String" isForPrompting="false">
+        <defaultValueExpression><![CDATA["C:\\Users\\Admin\\Pictures\\iPersystImages\\logo_actia.png"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="BAS_LOGO_ACTIA" class="java.lang.String" isForPrompting="false">
+        <defaultValueExpression><![CDATA["C:\\Users\\Admin\\Pictures\\iPersystImages\\logo_actia.png"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="HAUT_SITE_CLIENT" class="java.lang.String" isForPrompting="false">
+        <defaultValueExpression><![CDATA["SITE"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="LOGO_IPERSYST" class="java.lang.String" isForPrompting="false">
+        <defaultValueExpression><![CDATA["C:\\Users\\Admin\\Pictures\\iPersystImages\\logo_ipersyst.png"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="PARAM_IN" class="java.lang.String" isForPrompting="false">
+        <defaultValueExpression><![CDATA["('toto')"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="SUBREPORT_DIR" class="java.lang.String">
+        <defaultValueExpression><![CDATA[".\\rapports\\"]]></defaultValueExpression>
+    </parameter>
+    <field name="dshReference" class="java.lang.String"/>
+    <field name="dshNiveauValidation" class="java.lang.String"/>
+    <field name="dshRemarquesClient" class="java.lang.String"/>
+    <field name="pkEquivalence.dsequivNiveauValidation" class="java.lang.String"/>
+    <field name="pkEquivalence.dsequivReference" class="java.lang.String"/>
+    <field name="pkEquivalence.dsequivCommentairesValidateur" class="java.lang.String"/>
+    <field name="pkEquivalence.pkArticleInitial.artReference" class="java.lang.String"/>
+    <field name="pkEquivalence.pkArticleInitial.fabricant.fbcNom" class="java.lang.String"/>
+    <field name="pkEquivalence.pkArticleEquivalent.artReference" class="java.lang.String"/>
+    <field name="pkEquivalence.pkArticleEquivalent.fabricant.fbcNom" class="java.lang.String"/>
+    <field name="pkEquivalence.pkArticleInitial.artCouleur" class="java.lang.String"/>
+    <field name="pkEquivalence.pkArticleInitial.artLboDate" class="java.util.Date"/>
+    <field name="pkEquivalence.pkArticleEquivalent.artCouleur" class="java.lang.String"/>
+    <field name="pkEquivalence.pkArticleEquivalent.artLboDate" class="java.util.Date"/>
+    <sortField name="dshNiveauValidation"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="50" splitType="Stretch">
+            <line>
+                <reportElement key="line" positionType="FixRelativeToBottom" x="0" y="48" width="776" height="1" forecolor="#000000" uuid="42889f05-1341-4057-bbbb-03b99b7999d6"/>
+                <graphicElement>
+                    <pen lineWidth="2.0" lineStyle="Solid"/>
+                </graphicElement>
+            </line>
+            <line>
+                <reportElement key="line" x="0" y="3" width="776" height="2" forecolor="#000000" uuid="e38cf69b-a785-4f2c-a4af-43dd899dc4f5"/>
+                <graphicElement>
+                    <pen lineWidth="2.0" lineStyle="Solid"/>
+                </graphicElement>
+            </line>
+            <image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+                <reportElement key="image-1" x="3" y="5" width="131" height="37" uuid="69bf6907-d6c5-4c6c-a7e2-e5f6d0ed7c31"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <imageExpression><![CDATA[$P{HAUT_LOGO_CLIENT}]]></imageExpression>
+            </image>
+            <staticText>
+                <reportElement key="staticText-1" x="155" y="10" width="523" height="25" forecolor="#000000" backcolor="#FFFFFF" uuid="6f90080f-227f-439f-abd2-58535113ad8a"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="20" isBold="true"/>
+                </textElement>
+                <text><![CDATA[DOSSIERS d'HOMOLOGATION]]></text>
+            </staticText>
+            <image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+                <reportElement key="image-2" x="715" y="10" width="50" height="25" uuid="dc77461d-9d92-4f3c-83fe-36f3198fa758"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <imageExpression><![CDATA[$P{LOGO_IPERSYST}]]></imageExpression>
+            </image>
+        </band>
+    </title>
+    <pageHeader>
+        <band splitType="Stretch">
+            <printWhenExpression><![CDATA[new Boolean ($V{PAGE_NUMBER}.intValue()>1)]]></printWhenExpression>
+        </band>
+    </pageHeader>
+    <columnHeader>
+        <band height="34" splitType="Stretch">
+            <rectangle radius="0">
+                <reportElement key="rectangle-1" mode="Opaque" x="0" y="7" width="780" height="25" forecolor="#CCFFCC" backcolor="#CCFFCC" uuid="184dd0ac-c062-48ed-9383-94a7ef3d2a6f"/>
+                <graphicElement>
+                    <pen lineWidth="0.0" lineStyle="Solid"/>
+                </graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement key="element-90" x="0" y="12" width="73" height="17" forecolor="#000000" uuid="a84e736e-3d6b-4fe4-bff9-21ca9d676272"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+                </textElement>
+                <text><![CDATA[Numéro Dossier]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="element-90" x="115" y="12" width="65" height="16" forecolor="#000000" uuid="3b5c0990-79ed-473e-b32c-d4ed55a592f2"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12" isBold="true" isItalic="true" />
+                </textElement>
+                <text><![CDATA[Référence]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="element-90" x="180" y="12" width="70" height="16" forecolor="#000000" uuid="e8300115-c5b7-4452-8e99-2584c201ac47"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12" isBold="true" isItalic="true" />
+                </textElement>
+                <text><![CDATA[Fabricant]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="element-90" x="250" y="12" width="60" height="16" forecolor="#000000" uuid="e61249d9-18b4-4098-bbc2-ce08d3eafc7a"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+                </textElement>
+                <text><![CDATA[Statut]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="element-90" x="310" y="12" width="60" height="16" forecolor="#000000" uuid="01833f47-e48c-4a57-bb05-47d461d569c5"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12" isBold="true" isItalic="true" />
+                </textElement>
+                <text><![CDATA[LBO]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="element-90" x="409" y="12" width="61" height="16" forecolor="#000000" uuid="a029523c-7038-40b7-8e37-1f25240543bd"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12" isBold="true" isItalic="true" />
+                </textElement>
+                <text><![CDATA[Numéro]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="element-90" x="470" y="12" width="60" height="16" forecolor="#000000" uuid="12473bd3-2a24-42b5-8b1a-604c8941c530"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12" isBold="true" isItalic="true" />
+                </textElement>
+                <text><![CDATA[Sanction]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="element-90" x="530" y="12" width="88" height="16" forecolor="#000000" uuid="dd5ae41d-6f23-4d8e-9c4c-52bf27cd63c0"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12" isBold="true" isItalic="true" />
+                </textElement>
+                <text><![CDATA[Remarques]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="element-90" x="633" y="12" width="60" height="16" forecolor="#000000" uuid="831eedb5-efd1-4da9-839d-56c7467cfeb7"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12" isBold="true" isItalic="true"/>
+                </textElement>
+                <text><![CDATA[Sanction DSH]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="element-90" x="693" y="12" width="87" height="16" forecolor="#000000" uuid="0243c719-2d07-4469-8670-8eb97dbcd4db"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12" isBold="true" isItalic="true" />
+                </textElement>
+                <text><![CDATA[Remarques DSH]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="57" splitType="Stretch">
+            <line>
+                <reportElement key="line" positionType="FixRelativeToBottom" x="0" y="45" width="776" height="2" forecolor="#808080" uuid="a3ccd77c-d270-44fd-9f16-bdd9b4494505"/>
+                <graphicElement>
+                    <pen lineWidth="0.5" lineStyle="Solid"/>
+                </graphicElement>
+            </line>
+            <textField pattern="" isBlankWhenNull="true">
+                <reportElement key="textField" x="0" y="1" width="73" height="31" uuid="a8c095b0-a3a0-4d73-8114-b229c7d35221"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{dshReference}]]></textFieldExpression>
+            </textField>
+            <textField pattern="" isBlankWhenNull="true">
+                <reportElement key="textField" style="St_Couleur_DSH" x="633" y="1" width="60" height="31" uuid="b5234b6f-8e90-4b22-8e51-2d1840eb60b0"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{dshNiveauValidation}]]></textFieldExpression>
+            </textField>
+            <textField pattern="" isBlankWhenNull="true">
+                <reportElement key="textField" x="694" y="1" width="86" height="31" uuid="60f57ed6-bc7e-4b58-a956-48521ec9b69a"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{dshRemarquesClient}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight" pattern="" isBlankWhenNull="true">
+                <reportElement key="textField" style="St_Couleur_EQU" x="470" y="0" width="60" height="17" uuid="71e11d36-5cc3-4506-a271-005f3d151aa5"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{pkEquivalence.dsequivNiveauValidation}]]></textFieldExpression>
+            </textField>
+            <textField pattern="" isBlankWhenNull="true">
+                <reportElement key="textField" x="409" y="0" width="61" height="17" uuid="e47638a7-ab52-45eb-a7e2-20e0662f454a"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{pkEquivalence.dsequivReference}]]></textFieldExpression>
+            </textField>
+            <textField pattern="" isBlankWhenNull="true">
+                <reportElement key="textField" x="530" y="0" width="88" height="17" uuid="6e10c946-ece0-4f3d-8678-94ad83925b83"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{pkEquivalence.dsequivCommentairesValidateur}]]></textFieldExpression>
+            </textField>
+            <textField pattern="" isBlankWhenNull="true">
+                <reportElement key="textField" x="115" y="1" width="65" height="16" uuid="801a64a2-f33d-4b26-a8ec-5eebb0ffa1fb"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{pkEquivalence.pkArticleInitial.artReference}]]></textFieldExpression>
+            </textField>
+            <textField pattern="" isBlankWhenNull="true">
+                <reportElement key="textField" x="180" y="1" width="70" height="16" uuid="e1a9be60-e5f7-401a-a5e6-852a82b97908"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{pkEquivalence.pkArticleInitial.fabricant.fbcNom}]]></textFieldExpression>
+            </textField>
+            <textField pattern="" isBlankWhenNull="true">
+                <reportElement key="textField" x="115" y="17" width="65" height="15" uuid="f791e3e2-d9f0-49de-b041-a8eb6e4c0055"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{pkEquivalence.pkArticleEquivalent.artReference}]]></textFieldExpression>
+            </textField>
+            <textField pattern="" isBlankWhenNull="true">
+                <reportElement key="textField" x="180" y="17" width="70" height="15" uuid="9af2ee51-15eb-418f-8ace-c086ea337f7f"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{pkEquivalence.pkArticleEquivalent.fabricant.fbcNom}]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement key="textField" style="ACT_Fct_Couleur" x="250" y="1" width="60" height="16" uuid="d71a0138-ae83-459c-abfe-4ffa363f23dc"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{pkEquivalence.pkArticleInitial.artCouleur}.compareTo("vert")==0 ? "VERT" :
+$F{pkEquivalence.pkArticleInitial.artCouleur}.compareTo("orange")==0 ? "ORANGE" :
+$F{pkEquivalence.pkArticleInitial.artCouleur}.compareTo("jaune")==0 ? "JAUNE" :
+$F{pkEquivalence.pkArticleInitial.artCouleur}.compareTo("rouge")==0 ? "ROUGE" :
+$F{pkEquivalence.pkArticleInitial.artCouleur}.compareTo("sans")==0 ? "sans" :
+"INCONNU"]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement key="textField" x="310" y="1" width="59" height="16" uuid="1d2a2a94-d9ad-44be-9994-9224c6fe2ae7"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{pkEquivalence.pkArticleInitial.artLboDate}]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement key="textField" style="Couleur_equiv" x="250" y="17" width="60" height="15" uuid="26f834d5-0b1c-4743-aaf8-f8093536f4a9"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{pkEquivalence.pkArticleEquivalent.artCouleur}.compareTo("vert")==0 ? "VERT" :
+$F{pkEquivalence.pkArticleEquivalent.artCouleur}.compareTo("orange")==0 ? "ORANGE" :
+$F{pkEquivalence.pkArticleEquivalent.artCouleur}.compareTo("jaune")==0 ? "JAUNE" :
+$F{pkEquivalence.pkArticleEquivalent.artCouleur}.compareTo("rouge")==0 ? "ROUGE" :
+$F{pkEquivalence.pkArticleEquivalent.artCouleur}.compareTo("sans")==0 ? "sans" :
+"INCONNU"]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement key="textField" x="310" y="17" width="59" height="15" uuid="4ad69e2c-bcc9-46ee-a3c1-dcdf2d92b8d4"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="Arial" size="6"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{pkEquivalence.pkArticleEquivalent.artLboDate}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement key="staticText-2" x="377" y="1" width="31" height="15" uuid="d40b3125-994d-4588-8718-63dbc717cd21"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font isBold="true" isItalic="true" />
+                </textElement>
+                <text><![CDATA[DEQ]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="staticText-3" x="377" y="17" width="31" height="15" uuid="abe6e097-ed27-49fe-8c96-dc98b68735c8"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font isBold="true" isItalic="true" />
+                </textElement>
+                <text><![CDATA[BDT]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="staticText-4" x="73" y="1" width="42" height="16" uuid="b0e82a0b-46d0-4f35-8d38-1cb5433b41ef"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font isBold="true" isItalic="true" />
+                </textElement>
+                <text><![CDATA[Suivi]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="staticText-5" x="73" y="17" width="42" height="15" uuid="2a3836a5-f136-4499-bb08-1582680cb4ca"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font isBold="true" isItalic="true"/>
+                </textElement>
+                <text><![CDATA[Proposé]]></text>
+            </staticText>
+        </band>
+    </detail>
+    <columnFooter>
+        <band splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="27" splitType="Stretch">
+            <textField pattern="" isBlankWhenNull="false">
+                <reportElement key="textField" x="565" y="4" width="170" height="19" uuid="742fb671-390b-456a-9e11-007ef073881c"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Right">
+                    <font fontName="Arial" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER} + " / "]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+                <reportElement key="textField" x="741" y="4" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="8e88703e-2852-4d0c-a7f8-0bb76ea9b60c"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+                    <font fontName="Arial" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <line>
+                <reportElement key="line" x="0" y="1" width="776" height="3" forecolor="#000000" uuid="6b6c56ed-4300-4be0-ae86-4cd2e172abcf"/>
+                <graphicElement>
+                    <pen lineWidth="2.0" lineStyle="Solid"/>
+                </graphicElement>
+            </line>
+            <textField pattern="" isBlankWhenNull="false">
+                <reportElement key="textField" x="1" y="6" width="179" height="19" uuid="e1cb78b4-75b3-4e64-883a-6b1a7bdb3164"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+            </textField>
+            <textField pattern="" isBlankWhenNull="false">
+                <reportElement key="textField-2" x="209" y="6" width="149" height="8" forecolor="#000000" backcolor="#FFFFFF" uuid="bcf15df1-b433-4f71-bb8b-98cb283c6b55"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="6" isBold="true" isUnderline="true" />
+                </textElement>
+                <textFieldExpression><![CDATA["Rapport Dossiers d'Homologation généré par :"]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="false">
+                <reportElement key="textField-3" x="218" y="14" width="130" height="8" uuid="7525236a-066a-4009-af73-37dd2c1e9cdb"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="6" isBold="true" isUnderline="false" />
+                </textElement>
+                <textFieldExpression><![CDATA[$P{BAS_AUTEUR}]]></textFieldExpression>
+            </textField>
+            <image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+                <reportElement key="image-5" x="369" y="6" width="60" height="15" uuid="e21d1546-b02d-4bed-8095-364c56243125"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <imageExpression><![CDATA[$P{BAS_LOGO_ACTIA}]]></imageExpression>
+            </image>
+        </band>
+    </pageFooter>
+    <summary>
+        <band splitType="Stretch"/>
+    </summary>
+</jasperReport>

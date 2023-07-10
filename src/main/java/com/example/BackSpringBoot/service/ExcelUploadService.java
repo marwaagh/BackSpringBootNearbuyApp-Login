@@ -1,7 +1,9 @@
 package com.example.BackSpringBoot.service;
 
 import com.example.BackSpringBoot.model.DossierEquivalence;
+import com.example.BackSpringBoot.model.DossierHomologation;
 import com.example.BackSpringBoot.repository.DossierEquivalenceRepository;
+import com.example.BackSpringBoot.repository.DossierHomologationRepository;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -207,6 +209,160 @@ public class ExcelUploadService {
                     updatedDEQ.setDsequivCommentairesValidateur(deq.getDsequivCommentairesValidateur());
                     updatedDEQ.setAppOwner(deq.getAppOwner());
                     updatedDEQ.setDsequivFollowedComponent(deq.getDsequivFollowedComponent());
+                }
+                deqs.add(deq);
+            }
+        } catch (IOException e) {
+            e.getStackTrace();
+        }
+        return deqs;
+    }
+
+
+    //convert excel to list of deqs
+    public static List<DossierHomologation> getDSHDataFromExcel(InputStream inputStream, DossierHomologationRepository dossierHomologationRepository){
+        List<DossierHomologation> deqs = new ArrayList<>();
+        List<DossierHomologation> existingDeqs = dossierHomologationRepository.findAll();
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+            XSSFSheet sheet = workbook.getSheet("deqs");
+            int rowIndex =0;
+            for (Row row : sheet){
+                if (rowIndex ==0){
+                    rowIndex++;
+                    continue;
+                }
+                Iterator<Cell> cellIterator = row.iterator();
+                int cellIndex = 0;
+                DossierHomologation deq = new DossierHomologation();
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+                    switch (cellIndex) {
+                        case 0 -> {
+                            if (cell.getCellType() == CellType.NUMERIC) {
+                                deq.setId((long) cell.getNumericCellValue());
+                            } else {
+                                deq.setId(Long.parseLong(cell.getStringCellValue()));
+                            }
+                            break;
+                        }
+                        case 2 -> {
+                            //i want to compare this value with the existing Deqs references values and if they exists
+                            // i want to update the deq which have the same reference by the values of the row in the excel file
+                            deq.setDshReference(cell.getStringCellValue());
+                            break;
+                        }
+                        case 3 -> deq.setDshNiveauValidation(cell.getStringCellValue());
+                        case 4 -> {
+                            if (cell.getCellType() == CellType.NUMERIC) {
+                                Date date = (Date) cell.getDateCellValue();
+                                deq.setDshDateNiveauValidation(new java.sql.Date(date.getTime()));
+                            } else if (cell.getCellTypeEnum() == CellType.STRING && cell.getStringCellValue() != null) {
+                                deq.setDshDateNiveauValidation(Date.valueOf(LocalDate.now()));
+                            } else {
+                                deq.setDshDateNiveauValidation(Date.valueOf(LocalDate.now()));
+                            }
+                            break;
+                        }
+                        case 5 -> deq.setDshRemarquesClient(cell.getStringCellValue());
+                        case 6 -> deq.setDshLienFichierDemande(cell.getStringCellValue());
+                        case 7 -> deq.setDshArtEquivInCmde(cell.getStringCellValue());
+                        case 8 -> deq.setDshArtInitInCmde(cell.getStringCellValue());
+                        case 9 -> {
+                            if (cell.getCellType() == CellType.NUMERIC) {
+                                Date date = (Date) cell.getDateCellValue();
+                                deq.setDshDateEnvoiDossier(new java.sql.Date(date.getTime()));
+                            } else if (cell.getCellTypeEnum() == CellType.STRING && cell.getStringCellValue() != null) {
+                                deq.setDshDateEnvoiDossier(Date.valueOf(LocalDate.now()));
+                            } else {
+                                deq.setDshDateEnvoiDossier(Date.valueOf(LocalDate.now()));
+                            }
+                            break;
+                        }
+                        case 10 -> deq.setDshDemandeurUser(cell.getStringCellValue());
+                        case 11 -> {
+                            if (cell.getCellType() == CellType.NUMERIC) {
+                                Date date = (Date) cell.getDateCellValue();
+                                deq.setDshDateBasculement(new java.sql.Date(date.getTime()));
+                            } else if (cell.getCellTypeEnum() == CellType.STRING && cell.getStringCellValue() != null) {
+                                deq.setDshDateBasculement(Date.valueOf(LocalDate.now()));
+                            } else {
+                                deq.setDshDateBasculement(Date.valueOf(LocalDate.now()));
+                            }
+                            break;
+                        }
+                        case 12 -> {
+                            if (cell.getCellType() == CellType.NUMERIC) {
+                                java.util.Date date = cell.getDateCellValue();
+                                deq.setDshDateCreation(new java.sql.Date(date.getTime()));
+                            } else if (cell.getCellTypeEnum() == CellType.STRING && cell.getStringCellValue() != null) {
+                                deq.setDshDateCreation(Date.valueOf(LocalDate.now()));
+                            } else {
+                                deq.setDshDateCreation(Date.valueOf(LocalDate.now()));
+                            }
+                            break;
+                        }
+                        case 13 -> {
+                            if (cell.getCellTypeEnum() == CellType.NUMERIC) {
+                                double numericValue = cell.getNumericCellValue();
+                                deq.setDshEnAttenteEnvoi(Double.toString(numericValue));
+                            } else if (cell.getCellTypeEnum() == CellType.STRING) {
+                                deq.setDshEnAttenteEnvoi(cell.getStringCellValue());
+                            }
+                            break;
+                        }
+                        case 14 -> {
+                            if (cell.getCellType() == CellType.NUMERIC) {
+                                java.util.Date date = cell.getDateCellValue();
+                                deq.setDshDateStockage(new java.sql.Date(date.getTime()));
+                            } else if (cell.getCellTypeEnum() == CellType.STRING && cell.getStringCellValue() != null) {
+                                deq.setDshDateStockage(Date.valueOf(LocalDate.now()));
+                            } else {
+                                deq.setDshDateStockage(Date.valueOf(LocalDate.now()));
+                            }
+                            break;
+                        }
+                        case 15 -> {
+                            if (cell.getCellType() == CellType.NUMERIC) {
+                                java.util.Date date = cell.getDateCellValue();
+                                deq.setDshDemandeurDate(new java.sql.Date(date.getTime()));
+                            } else if (cell.getCellTypeEnum() == CellType.STRING && cell.getStringCellValue() != null) {
+                                deq.setDshDemandeurDate(Date.valueOf(LocalDate.now()));
+                            } else {
+                                deq.setDshDemandeurDate(Date.valueOf(LocalDate.now()));
+                            }
+                            break;
+                        }
+                        case 16 -> deq.setDshLienFichierReponseClient(cell.getStringCellValue());
+                        case 17 -> {
+                            if (cell.getCellType() == CellType.NUMERIC) {
+                                Date date = (Date) cell.getDateCellValue();
+                                deq.setDshDemandeurDate(new java.sql.Date(date.getTime()));
+                            } else if (cell.getCellTypeEnum() == CellType.STRING && cell.getStringCellValue() != null) {
+                                deq.setDshDemandeurDate(Date.valueOf(LocalDate.now()));
+                            } else {
+                                deq.setDshDemandeurDate(Date.valueOf(LocalDate.now()));
+                            }
+                            break;
+                        }
+                        case 18 -> {
+                            if (cell.getCellType() == CellType.NUMERIC) {
+                                Date date = (Date) cell.getDateCellValue();
+                                deq.setDshDateStockage(new java.sql.Date(date.getTime()));
+                            } else if (cell.getCellTypeEnum() == CellType.STRING && cell.getStringCellValue() != null) {
+                                deq.setDshDateStockage(Date.valueOf(LocalDate.now()));
+                            } else {
+                                deq.setDshDateStockage(Date.valueOf(LocalDate.now()));
+                            }
+                            break;
+                        }
+                        case 19 -> deq.setDshFollowedComponentEquiv(cell.getStringCellValue());
+                        case 20 -> deq.setDshFollowedComponent(cell.getStringCellValue());
+                        case 21 -> deq.setAppOwner(cell.getStringCellValue());
+                        default -> {
+                        }
+                    }
+                    cellIndex++;
                 }
                 deqs.add(deq);
             }

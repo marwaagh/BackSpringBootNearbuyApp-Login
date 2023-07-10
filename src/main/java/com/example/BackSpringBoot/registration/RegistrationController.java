@@ -9,7 +9,9 @@ import com.example.BackSpringBoot.appuser.AppUserService;
 import com.example.BackSpringBoot.exception.ResourceNotFoundException;
 import com.example.BackSpringBoot.registration.token.ConfirmationToken;
 import com.example.BackSpringBoot.registration.token.ConfirmationTokenRepository;
+import com.example.BackSpringBoot.service.ReportService;
 import lombok.AllArgsConstructor;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,9 +21,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin("**")
@@ -35,6 +43,9 @@ public class RegistrationController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private ReportService reportService;
+
     private final RegistrationService registrationService;
     @Autowired
     private AppUserRepository appUserRepository;
@@ -42,7 +53,6 @@ public class RegistrationController {
     private AppUserService appUserService;
     private ConfirmationTokenRepository confirmationTokenRepository;
     private final AuthenticationManager authenticationManager;
-    private final AppUserService appUserDetailsService;
     private final JwtUtils jwtUtils;
 
 
@@ -53,9 +63,9 @@ public class RegistrationController {
         //registrationService.register(request);
     }
 
-    @GetMapping("appUser/find/{firstname}")
-    public ResponseEntity<AppUser> getUserByName(@PathVariable("firstname") String name) {
-        AppUser appUser = (AppUser) appUserService.loadUserByUsername(name);
+    @GetMapping("appUser/find/{username}")
+    public ResponseEntity<AppUser> getUserByName(@PathVariable String username) {
+        AppUser appUser = (AppUser) appUserService.loadUserByUsername(username);
         return new ResponseEntity<>(appUser, HttpStatus.OK);
     }
 
@@ -66,7 +76,7 @@ public class RegistrationController {
 
 
     // get all users
-    @GetMapping(path = "appUser")
+    @GetMapping("appUser")
     public List<AppUser> getAllAppUser() {
         return appUserRepository.findAll();
     }
@@ -96,7 +106,7 @@ public class RegistrationController {
         updateAppUser.setFirstName(appUserDetails.getFirstName());
         updateAppUser.setLastName(appUserDetails.getLastName());
         //updateAppUser.setEmail(appUserDetails.getEmail());
-        updateAppUser.setNumber(appUserDetails.getNumber());
+        //updateAppUser.setNumber(appUserDetails.getNumber());
         updateAppUser.setPassword(bCryptPasswordEncoder.encode(appUserDetails.getPassword()));
        /* updateAppUser.setAppUserRole(AppUserRole.USER);
         updateAppUser.setEnabled(appUserDetails.getEnabled());
@@ -153,52 +163,27 @@ public class RegistrationController {
             AppUser user = (AppUser) authenticate.getPrincipal();
 
             // Check if user has ADMIN role
-            if (user.getAppUserRole().equals(AppUserRole.ADMIN.name())) {
+            //if (user.getAppUserRole().equals(AppUserRole.USER.name())) {
                 return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,
                         jwtUtils.generateToken(user)
                 ).body(user);
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
+            //} else {
+           //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+           // }
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-// reset password
-     /*   @PutMapping("resetPassword")
-        public ResponseEntity<?> changePassword(@RequestParam String oldPassword, @RequestParam String newPassword) {
-            AppUser user = appUserRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
-
-            if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-                throw new InvalidPasswordException("Invalid old password");
-            }
-
-            user.setPassword(passwordEncoder.encode(newPassword));
-            appUserRepository.save(user);
-
-            return ResponseEntity.ok().build();
-        }
-
-    @PostMapping(path = "reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
-
-        // Find the user by email
-        AppUser user = appUserRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + request.getEmail()));
-
-        // Generate a new confirmation token for resetting the password
-        ConfirmationToken token = new ConfirmationToken(user);
-
-        // Save the confirmation token in the database
-        confirmationTokenRepository.save(token);
-
-        // Send the email with the password reset link
-        String resetPasswordLink = "https://example.com/reset-password?token=" + token.getToken();
-        String message = "Please click the following link to reset your password: " + resetPasswordLink;
-        emailService.sendEmail(request.getEmail(), "Reset Password", message);
-
-        return ResponseEntity.ok("Password reset email sent successfully");
+    //Reports
+    @GetMapping("/report/ficheuser/{id}")
+    public ResponseEntity<byte[]> generateReport(@PathVariable Long id) throws IOException, JRException {
+        return reportService.exportRapportFicheUser(id);
     }
-*/
+
+    @GetMapping("/report/listeusers")
+    public ResponseEntity<byte[]> generateReportListeCltSite() throws IOException, JRException {
+        return reportService.exportRapportListeUser();
+    }
+
+
 }

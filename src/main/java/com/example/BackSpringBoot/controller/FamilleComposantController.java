@@ -1,6 +1,8 @@
 package com.example.BackSpringBoot.controller;
 
+import com.example.BackSpringBoot.exception.ResourceNotFoundException;
 import com.example.BackSpringBoot.model.Article;
+import com.example.BackSpringBoot.model.Client;
 import com.example.BackSpringBoot.model.FamilleComposant;
 import com.example.BackSpringBoot.repository.ArticleRepository;
 import com.example.BackSpringBoot.repository.FamilleComposantRepository;
@@ -26,6 +28,12 @@ public class FamilleComposantController {
     public ResponseEntity<List<FamilleComposant>> getAllFamillesComposants(){
         List<FamilleComposant> famillescomposants = familleComposantRepository.findAll();
         return new ResponseEntity<>(famillescomposants, HttpStatus.OK) ;
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<FamilleComposant> getFamilleComposant(@PathVariable long id){
+        FamilleComposant familleComposant = familleComposantRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("famille Composant not exist with id: " + id));
+        return new ResponseEntity<>(familleComposant, HttpStatus.OK) ;
     }
 
     @PostMapping("/add")

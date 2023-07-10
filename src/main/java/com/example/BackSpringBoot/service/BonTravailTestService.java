@@ -1,5 +1,7 @@
 package com.example.BackSpringBoot.service;
 
+import com.example.BackSpringBoot.exception.UserNotFoundException;
+import com.example.BackSpringBoot.model.Article;
 import com.example.BackSpringBoot.model.BonTravailTest;
 import com.example.BackSpringBoot.repository.BonTravailTestRepository;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,10 @@ public class BonTravailTestService {
 
     public BonTravailTest addBonTravailTest(BonTravailTest bonTravailTest) {
         return bonTravailTestRepository.save(bonTravailTest);
+    }
+
+    public BonTravailTest findById(Long id){
+        return bonTravailTestRepository.findById(id).orElseThrow(()-> new UserNotFoundException("le bdt ayant l id" + id +"est introuvable")) ;
     }
 
 }

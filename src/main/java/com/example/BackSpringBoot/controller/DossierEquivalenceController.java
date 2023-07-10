@@ -3,13 +3,16 @@ package com.example.BackSpringBoot.controller;
 import com.example.BackSpringBoot.Files.ExcelUtils;
 import com.example.BackSpringBoot.exception.ResourceNotFoundException;
 import com.example.BackSpringBoot.model.Article;
+import com.example.BackSpringBoot.model.Client;
 import com.example.BackSpringBoot.model.DossierEquivalence;
 import com.example.BackSpringBoot.repository.ArticleRepository;
 import com.example.BackSpringBoot.repository.DossierEquivalenceRepository;
+import com.example.BackSpringBoot.service.ArticleService;
 import com.example.BackSpringBoot.service.DossierEquivalenceService;
 import com.example.BackSpringBoot.service.ReportService;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.poi.util.IOUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +55,12 @@ public class DossierEquivalenceController {
     public ResponseEntity<List<DossierEquivalence>> getAllDEQs() {
         List<DossierEquivalence> deqs = dossierEquivalenceService.findallDossierEquivalences();
         return new ResponseEntity<>(deqs, HttpStatus.OK);
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<DossierEquivalence> getDeq(@PathVariable long id){
+        DossierEquivalence deq = dossierEquivalenceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("deq not exist with id: " + id));
+        return new ResponseEntity<>(deq, HttpStatus.OK) ;
     }
 
     @GetMapping("/equiv/{idinit}")
@@ -142,20 +151,14 @@ public class DossierEquivalenceController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<DossierEquivalence> updateDEQ(@PathVariable long id, @RequestBody DossierEquivalence dossierEquivalence) {
-        DossierEquivalence updateDEQ = dossierEquivalenceRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("DEQ not exist with id: " + id));
-        //updateDEQ.setDsequivCouleurArtInit(dossierEquivalence.getDsequivCouleurArtInit());
-        updateDEQ.setDsequivReference(dossierEquivalence.getDsequivReference());
-        updateDEQ.setDsequivNiveauValidation(dossierEquivalence.getDsequivNiveauValidation());
-        updateDEQ.setDsequivDateNiveauValidation(dossierEquivalence.getDsequivDateNiveauValidation());
-        updateDEQ.setDsequivDateCreation(dossierEquivalence.getDsequivDateCreation());
-        //updateDEQ.setDsequivDemandeurUser(dossierEquivalence.getDsequivDemandeurUser());
-        //updateDEQ.setDsequivValidateurUser(dossierEquivalence.getDsequivValidateurUser());
-        // updateDEQ.setDsequivCommentairesDemandeur(dossierEquivalence.getDsequivCommentairesDemandeur());
-        // updateDEQ.setDsequivCommentairesValidateur(dossierEquivalence.getDsequivCommentairesValidateur());
+            DossierEquivalence existingArticle = dossierEquivalenceRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("deq does not exist with id: " + id));
 
-        dossierEquivalenceRepository.save(updateDEQ);
-        return new ResponseEntity<>(updateDEQ, HttpStatus.OK);
-        // return "user updated !!!!";
+            // Copy only the provided properties while ignoring null or default values
+            BeanUtils.copyProperties(dossierEquivalence, existingArticle, ArticleService.getNullPropertyNames(dossierEquivalence));
+
+            DossierEquivalence updatedArticle = dossierEquivalenceRepository.save(existingArticle);
+            return new ResponseEntity<>(updatedArticle, HttpStatus.OK);
     }
 
 

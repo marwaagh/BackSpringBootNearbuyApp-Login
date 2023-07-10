@@ -6,18 +6,24 @@ import com.example.BackSpringBoot.model.Article;
 import com.example.BackSpringBoot.model.Client;
 import com.example.BackSpringBoot.repository.ClientRepository;
 import com.example.BackSpringBoot.service.ClientService;
+import com.example.BackSpringBoot.service.ReportService;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1/ipersyst/client")
 public class ClientController {
     private final ClientService clientService;
+
+    @Autowired
+    private ReportService reportService;
     @Autowired
     private ClientRepository clientRepository;
     @Autowired
@@ -70,5 +76,16 @@ public class ClientController {
         clientRepository.delete(deleteClient);
         clientService.deleteClient(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //Reports
+    @GetMapping("/report/ficheclient/{id}")
+    public ResponseEntity<byte[]> generateReport(@PathVariable Long id) throws IOException, JRException {
+        return reportService.exportRapportFicheClient(id);
+    }
+
+    @GetMapping("/report/listeclients")
+    public ResponseEntity<byte[]> generateReportListeClt() throws IOException, JRException {
+        return reportService.exportRapportListeClt();
     }
 }

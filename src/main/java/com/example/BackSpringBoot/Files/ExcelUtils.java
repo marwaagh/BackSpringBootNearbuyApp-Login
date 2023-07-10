@@ -109,21 +109,28 @@ public class ExcelUtils {
             int rowIdx = 1;
             for (DossierHomologation dsh : dshs) {
                 Row row = sheet.createRow(rowIdx++);
-                row.createCell(0).setCellValue(dsh.getPkClientSite().getClstReference());
+                if(dsh.getPkClientSite() != null){
+
+                    row.createCell(0).setCellValue(dsh.getPkClientSite().getClstReference());
+                } else {
+                    row.createCell(0).setCellValue("");
+                }
                 row.createCell(1).setCellValue(dsh.getDshReference());
                 row.createCell(2).setCellValue(dsh.getDshNiveauValidation());
                 row.createCell(3).setCellValue(dsh.getDshDateNiveauValidation());
                 row.createCell(4).setCellValue(dsh.getDshDateCreation());
-                if (dsh.getPkEquivalence().getPkArticleInitial() != null) {
-                    row.createCell(5).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtFollowedComponent());
-                    row.createCell(6).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtTypeArticle());
-                    row.createCell(7).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtReference());
-                    row.createCell(8).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getFabricant().getFbcReference());
-                    row.createCell(9).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getFabricant().getFbcNCAGE());
-                    row.createCell(10).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtCouleur());
-                    row.createCell(11).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtLboDate());
-                    row.createCell(12).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtNcage());
-                    row.createCell(13).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtNno());
+                if(dsh.getPkEquivalence() !=null) {
+                    if (dsh.getPkEquivalence().getPkArticleInitial() != null) {
+                        row.createCell(5).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtFollowedComponent());
+                        row.createCell(6).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtTypeArticle());
+                        row.createCell(7).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtReference());
+                        row.createCell(8).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getFabricant().getFbcReference());
+                        row.createCell(9).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getFabricant().getFbcNCAGE());
+                        row.createCell(10).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtCouleur());
+                        row.createCell(11).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtLboDate());
+                        row.createCell(12).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtNcage());
+                        row.createCell(13).setCellValue(dsh.getPkEquivalence().getPkArticleInitial().getArtNno());
+                    }
                 } else {
                     row.createCell(5).setCellValue("");
                     row.createCell(6).setCellValue("");
@@ -135,16 +142,19 @@ public class ExcelUtils {
                     row.createCell(12).setCellValue("");
                     row.createCell(13).setCellValue("");
                 }
-                if(dsh.getPkEquivalence().getPkArticleEquivalent() != null){
-                    row.createCell(14).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getArtReference());
-                    row.createCell(15).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getFabricant().fbcReference);
-                    row.createCell(16).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getFabricant().getFbcNCAGE());
-                    row.createCell(17).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getArtCouleur());
-                    row.createCell(18).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getArtLboDate());
-                    row.createCell(19).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getArtNcage());
-                    row.createCell(20).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getArtNno());
-                    row.createCell(21).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getArtFollowedComponent());
-                } else {
+                if(dsh.getPkEquivalence() != null){
+                    if(dsh.getPkEquivalence().getPkArticleEquivalent() != null){
+                        row.createCell(14).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getArtReference());
+                        row.createCell(15).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getFabricant().fbcReference);
+                        row.createCell(16).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getFabricant().getFbcNCAGE());
+                        row.createCell(17).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getArtCouleur());
+                        row.createCell(18).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getArtLboDate());
+                        row.createCell(19).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getArtNcage());
+                        row.createCell(20).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getArtNno());
+                        row.createCell(21).setCellValue(dsh.getPkEquivalence().getPkArticleEquivalent().getArtFollowedComponent());
+
+                    }
+                 } else {
                     row.createCell(14).setCellValue("");
                     row.createCell(15).setCellValue("");
                     row.createCell(16).setCellValue("");
@@ -154,15 +164,27 @@ public class ExcelUtils {
                     row.createCell(20).setCellValue("");
                     row.createCell(21).setCellValue("");
                 }
+                if(dsh.getPkEquivalence() != null) {
+                    row.createCell(22).setCellValue(dsh.getPkEquivalence().getDsequivDemandeurUser());
+                    row.createCell(23).setCellValue(dsh.getPkEquivalence().getDsequivNiveauValidation());
+                    row.createCell(24).setCellValue(dsh.getPkEquivalence().getDsequivDateNiveauValidation());
+                    row.createCell(25).setCellValue(dsh.getPkEquivalence().getDsequivCommentairesDemandeur());
+                    row.createCell(26).setCellValue(dsh.getPkEquivalence().getDsequivCommentairesValidateur());
+                } else {
+                    row.createCell(22).setCellValue("");
+                    row.createCell(23).setCellValue("");
+                    row.createCell(24).setCellValue("");
+                    row.createCell(25).setCellValue("");
+                    row.createCell(26).setCellValue("");
+                }
 
-                row.createCell(22).setCellValue(dsh.getPkEquivalence().getDsequivDemandeurUser());
-                row.createCell(23).setCellValue(dsh.getPkEquivalence().getDsequivNiveauValidation());
-                row.createCell(24).setCellValue(dsh.getPkEquivalence().getDsequivDateNiveauValidation());
-                row.createCell(25).setCellValue(dsh.getPkEquivalence().getDsequivCommentairesDemandeur());
-                row.createCell(26).setCellValue(dsh.getPkEquivalence().getDsequivCommentairesValidateur());
                 row.createCell(27).setCellValue(dsh.getDshDateEnvoiDossier());
                 row.createCell(28).setCellValue(dsh.getDshRemarquesClient());
-                row.createCell(29).setCellValue(dsh.getDshQteRex());
+                if(dsh.getDshQteRex() != null) {
+                    row.createCell(29).setCellValue(dsh.getDshQteRex());
+                } else {
+                    row.createCell(29).setCellValue("");
+                }
                 row.createCell(30).setCellValue(dsh.getDshDemandeRex());
                 row.createCell(31).setCellValue(dsh.getDshEnAttenteEnvoi());
                 row.createCell(32).setCellValue(dsh.getDshArtInitInCmde());

@@ -17,6 +17,12 @@ import java.util.Calendar;
 @Entity
 @Table(name = "dossierequivalence")
 public class DossierEquivalence {
+
+    public static final String PROP_DSEQUIV_FOLLOWED_COMPONENT = "dsequivFollowedComponent";
+    public static final String PROP_PK_ARTICLE_INITIAL = "pkArticleInitial";
+    public static final String PROP_ID = "id";
+    public static String Id;
+    public static final String PROP_DSEQUIV_NIVEAU_VALIDATION = "dsequivNiveauValidation";
     @Id
     @GeneratedValue
     private Long id;

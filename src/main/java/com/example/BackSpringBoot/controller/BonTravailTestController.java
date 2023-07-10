@@ -3,13 +3,18 @@ package com.example.BackSpringBoot.controller;
 import com.example.BackSpringBoot.exception.ResourceNotFoundException;
 import com.example.BackSpringBoot.model.*;
 import com.example.BackSpringBoot.repository.*;
+import com.example.BackSpringBoot.service.ArticleService;
 import com.example.BackSpringBoot.service.BonTravailTestService;
+import com.example.BackSpringBoot.service.ReportService;
+import net.sf.jasperreports.engine.JRException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +40,8 @@ public class BonTravailTestController {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private ReportService reportService;
 
     public BonTravailTestController(BonTravailTestService bonTravailTestService) {
         this.bonTravailTestService = bonTravailTestService;
@@ -45,6 +52,12 @@ public class BonTravailTestController {
     public ResponseEntity<List<BonTravailTest>> getAllBonTravailTest(){
         List<BonTravailTest> bonTravailTests = bonTravailTestRepository.findAll();
         return new ResponseEntity<>(bonTravailTests, HttpStatus.OK) ;
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<BonTravailTest> getArticleById(@PathVariable("id") Long id){
+        BonTravailTest bonTravailTest = bonTravailTestService.findById(id);
+        return new ResponseEntity<>(bonTravailTest, HttpStatus.OK) ;
     }
 
     @PostMapping("/add")
@@ -77,7 +90,8 @@ public class BonTravailTestController {
             bdt.setBdtEstTestFonctionnel((boolean) bdtData.get("bdt_est_test_fonctionnel"));
             bdt.setBdtNiveauValidation((String) bdtData.get("bdt_niveau_validation"));
             bdt.setBdtObservations((String) bdtData.get("bdt_observations"));
-            bdt.setBdtQteTemp((String) bdtData.get("bdt_qte_temp"));
+            bdt.setBdtQteTemp1((String) bdtData.get("bdt_qte_temp1"));
+            bdt.setBdtQteTemp2((String) bdtData.get("bdt_qte_temp2"));
             bdt.setBdtQuantite((Long) bdtData.get("bdt_quantite"));
             bdt.setBdtReference((String) bdtData.get("bdt_reference"));
             bdt.setBdtRetEstValide((boolean) bdtData.get("bdt_ret_est_valide"));
@@ -122,26 +136,14 @@ public class BonTravailTestController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<BonTravailTest> updateBDT(@PathVariable long id, @RequestBody BonTravailTest bonTravailTest) {
-        BonTravailTest updateBDT = bonTravailTestRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("BDT not exist with id: " + id));
-        updateBDT.setPkArticleInitial(bonTravailTest.getPkArticleInitial());
-        updateBDT.setPkArticleEquivalent(bonTravailTest.getPkArticleEquivalent());
-        updateBDT.setPkArticleCarte(bonTravailTest.getPkArticleCarte());
-        updateBDT.setPkDossierHomologation(bonTravailTest.getPkDossierHomologation());
-        updateBDT.setPkFabricant(bonTravailTest.getPkFabricant());
-        updateBDT.setBdtQteTemp(bonTravailTest.getBdtQteTemp());
-        updateBDT.setBdtTempTest(bonTravailTest.getBdtTempTest());
-        updateBDT.setBdtEstTestFonctionnel(bonTravailTest.isBdtEstTestFonctionnel());
-        updateBDT.setBdtSpecifsParts(bonTravailTest.getBdtSpecifsParts());
-        updateBDT.setBdtObservations(bonTravailTest.getBdtObservations());
-        updateBDT.setBdtRetReference(bonTravailTest.getBdtRetReference());
-        updateBDT.setBdtRetEstValide(bonTravailTest.isBdtRetEstValide());
-        updateBDT.setBdtRetQteBonnes(bonTravailTest.getBdtRetQteBonnes());
-        updateBDT.setBdtRetQteMauvaise(bonTravailTest.getBdtRetQteMauvaise());
-        updateBDT.setBdtRetLienFichier(bonTravailTest.getBdtRetLienFichier());
-        updateBDT.setBdtCommentaireLabo(bonTravailTest.getBdtCommentaireLabo());
-        updateBDT.setBdtCommentaireValidateur(bonTravailTest.getBdtCommentaireValidateur());
-        bonTravailTestRepository.save(updateBDT);
-        return new ResponseEntity<>(updateBDT, HttpStatus.OK);
+        BonTravailTest existingBdt = bonTravailTestRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("bdt does not exist with id: " + id));
+
+        // Copy only the provided properties while ignoring null or default values
+        BeanUtils.copyProperties(bonTravailTest, existingBdt, ArticleService.getNullPropertyNames(bonTravailTest));
+
+        BonTravailTest updatedBdt = bonTravailTestRepository.save(existingBdt);
+        return new ResponseEntity<>(updatedBdt, HttpStatus.OK);
     }
 
     //gestion des boutons
@@ -195,5 +197,16 @@ public class BonTravailTestController {
         updateBDT.setBdtCommentaireLabo(bonTravailTest.getBdtCommentaireLabo());
         bonTravailTestRepository.save(updateBDT);
         return new ResponseEntity<>(updateBDT, HttpStatus.OK);
+    }
+
+    //Reports
+    @GetMapping("/report/fichebdt/{id}")
+    public ResponseEntity<byte[]> generateReport(@PathVariable Long id) throws IOException, JRException {
+        return reportService.exportRapportFicheBdt(id);
+    }
+
+    @GetMapping("/report/listebdts")
+    public ResponseEntity<byte[]> generateReportListeClt() throws IOException, JRException {
+        return reportService.exportRapportListeBdt();
     }
 }

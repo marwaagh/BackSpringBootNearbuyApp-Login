@@ -5,11 +5,13 @@ package com.example.BackSpringBoot.appuser;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,12 +34,13 @@ public class AppUser implements UserDetails {
             generator = "appuser_sequence"
     )
     private Long id;
-
+    @CreationTimestamp
+    private Timestamp ts;
+    //private String appOwner;
     private String username;
     private String firstName;
     private String lastName;
-    //private String email;
-    private String number;
+    //private String number;
     private String password;
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
@@ -48,14 +51,14 @@ public class AppUser implements UserDetails {
                    String firstName,
                    String lastName,
                   // String email,
-                   String number,
+                   //String number,
                    String password,
                    AppUserRole appUserRole) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         //this.email = email;
-        this.number = number;
+        //this.number = number;
         this.password = password;
         this.appUserRole = appUserRole;
     }
@@ -64,8 +67,7 @@ public class AppUser implements UserDetails {
     @JsonDeserialize(contentUsing = GrantedAuthorityDeserializer.class)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority =
-                new SimpleGrantedAuthority(appUserRole.name());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(appUserRole.name());
         return Collections.singletonList(authority);
     }
 
@@ -87,13 +89,10 @@ public class AppUser implements UserDetails {
         return lastName;
     }
 
-    public String getNumber() {
+    /*public String getNumber() {
         return number;
-    }
+    }*/
 
-    public String getAppUserRole() {
-        return appUserRole.name();
-    }
 
     /*public String getEmail() {
         return email;

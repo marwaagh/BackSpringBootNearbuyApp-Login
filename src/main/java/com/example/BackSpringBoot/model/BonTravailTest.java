@@ -27,7 +27,8 @@ public class BonTravailTest {
     private boolean bdtEstTestFonctionnel;
     private Date bdtDateRetourSouhaitee;
     private String bdtTempTest;
-    private String bdtQteTemp;
+    private String bdtQteTemp1;
+    private String bdtQteTemp2;
     private String bdtSpecifsParts;
     private String bdtNiveauValidation;
     private String bdtDemandeurUser;

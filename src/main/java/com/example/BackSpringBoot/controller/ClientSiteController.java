@@ -6,16 +6,18 @@ import com.example.BackSpringBoot.model.*;
 import com.example.BackSpringBoot.repository.ClientRepository;
 import com.example.BackSpringBoot.repository.ClientSiteRepository;
 import com.example.BackSpringBoot.repository.SiteRepository;
+import com.example.BackSpringBoot.service.ArticleService;
 import com.example.BackSpringBoot.service.ClientSiteService;
+import com.example.BackSpringBoot.service.ReportService;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
-import java.beans.PropertyDescriptor;
+
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -36,6 +38,8 @@ public class ClientSiteController {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private ReportService reportService;
 
     public ClientSiteController(ClientSiteService clientSiteService) {
         this.clientSiteService = clientSiteService;
@@ -45,6 +49,11 @@ public class ClientSiteController {
     public ResponseEntity<List<ClientSite>> getAllClientSites(){
         List<ClientSite> clientSites = clientSiteService.findAll();
         return new ResponseEntity<>(clientSites, HttpStatus.OK) ;
+    }
+    @GetMapping("/find/{id}")
+    public ResponseEntity<ClientSite> getClient(@PathVariable long id){
+        ClientSite clientSite = clientSiteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client site not exist with id: " + id));
+        return new ResponseEntity<>(clientSite, HttpStatus.OK) ;
     }
 
     @GetMapping("/client/{pkClient}")
@@ -148,25 +157,13 @@ public class ClientSiteController {
                 .orElseThrow(() -> new ResourceNotFoundException("Client Site does not exist with id: " + id));
 
         // Copy only the provided properties while ignoring null or default values
-        BeanUtils.copyProperties(clientSite, existingClientSite, getNullPropertyNames(clientSite));
+        BeanUtils.copyProperties(clientSite, existingClientSite, ArticleService.getNullPropertyNames(clientSite));
 
         ClientSite updatedClientSite = clientSiteRepository.save(existingClientSite);
         return new ResponseEntity<>(updatedClientSite, HttpStatus.OK);
     }
 
-    private String[] getNullPropertyNames(Object source) {
-        final BeanWrapper src = new BeanWrapperImpl(source);
-        PropertyDescriptor[] pds = src.getPropertyDescriptors();
 
-        Set<String> emptyNames = new HashSet<>();
-        for (PropertyDescriptor pd : pds) {
-            Object srcValue = src.getPropertyValue(pd.getName());
-            if (srcValue == null || pd.getName().equals("id")) { // Exclude 'id' property
-                emptyNames.add(pd.getName());
-            }
-        }
-        return emptyNames.toArray(new String[0]);
-    }
 
 
     @DeleteMapping("/delete/{id}")
@@ -176,5 +173,16 @@ public class ClientSiteController {
         clientSiteRepository.delete(deleteClientSite);
         clientSiteService.deleteClientSite(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //Reports
+    @GetMapping("/report/ficheclientsite/{id}")
+    public ResponseEntity<byte[]> generateReport(@PathVariable Long id) throws IOException, JRException {
+        return reportService.exportRapportFicheClientSite(id);
+    }
+
+    @GetMapping("/report/listeclientsites")
+    public ResponseEntity<byte[]> generateReportListeCltSite() throws IOException, JRException {
+        return reportService.exportRapportListeCltSite();
     }
 }

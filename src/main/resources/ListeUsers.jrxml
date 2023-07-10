@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Liste Sites" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoPages" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="9747020c-a0db-4494-993f-7d9da5a68f56">
+    <property name="ireport.scriptlethandling" value="0"/>
+    <property name="ireport.encoding" value="UTF-8"/>
+    <import value="net.sf.jasperreports.engine.*"/>
+    <import value="java.util.*"/>
+    <import value="net.sf.jasperreports.engine.data.*"/>
+    <parameter name="BAS_AUTEUR" class="java.lang.String" isForPrompting="false">
+        <defaultValueExpression><![CDATA["Gregory Maurel"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="HAUT_LOGO_CLIENT" class="java.lang.String" isForPrompting="false">
+        <defaultValueExpression><![CDATA["C:\\Users\\Admin\\Pictures\\iPersystImages\\logo_actia.png"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="BAS_LOGO_ACTIA" class="java.lang.String" isForPrompting="false">
+        <defaultValueExpression><![CDATA["C:\\Users\\Admin\\Pictures\\iPersystImages\\logo_actia.png"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="HAUT_SITE_CLIENT" class="java.lang.String" isForPrompting="false">
+        <defaultValueExpression><![CDATA["SITE"]]></defaultValueExpression>
+    </parameter>
+    <parameter name="LOGO IPERSYST" class="java.lang.String" isForPrompting="false">
+        <defaultValueExpression><![CDATA["C:\\Users\\Admin\\Pictures\\iPersystImages\\logo_ipersyst.png"]]></defaultValueExpression>
+    </parameter>
+    <field name="username" class="java.lang.String"/>
+    <field name="appUserRole" class="java.lang.String"/>
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="50" splitType="Stretch">
+            <line>
+                <reportElement key="line" positionType="FixRelativeToBottom" x="0" y="48" width="776" height="1" forecolor="#000000" uuid="931803cc-8ec6-4a14-a755-8822ef5dee09"/>
+                <graphicElement>
+                    <pen lineWidth="2.0" lineStyle="Solid"/>
+                </graphicElement>
+            </line>
+            <line>
+                <reportElement key="line" x="0" y="3" width="776" height="2" forecolor="#000000" uuid="d05f2378-1c50-44cc-ac5e-c0e295cc65fb"/>
+                <graphicElement>
+                    <pen lineWidth="2.0" lineStyle="Solid"/>
+                </graphicElement>
+            </line>
+            <image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+                <reportElement key="image-1" x="3" y="5" width="131" height="37" uuid="02b62d10-150c-44cd-9c75-d280bcf80637"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <imageExpression><![CDATA[$P{HAUT_LOGO_CLIENT}]]></imageExpression>
+            </image>
+            <staticText>
+                <reportElement key="staticText-1" x="155" y="10" width="523" height="25" forecolor="#000000" backcolor="#FFFFFF" uuid="4303a112-1539-40a2-9c41-d102889089df"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="20" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Classic Report Template]]></text>
+            </staticText>
+            <image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+                <reportElement key="image-2" x="715" y="10" width="50" height="25" uuid="957a2330-f9fc-4b02-b60c-20de73a308bc"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <imageExpression><![CDATA[$P{LOGO IPERSYST}]]></imageExpression>
+            </image>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="33" splitType="Stretch">
+            <printWhenExpression><![CDATA[new Boolean ($V{PAGE_NUMBER}.intValue()>1)]]></printWhenExpression>
+            <image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+                <reportElement key="image-3" x="3" y="5" width="131" height="26" uuid="6d4f8c54-d9f7-43de-9261-6bd0f5d9100e"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <imageExpression><![CDATA[$P{HAUT_LOGO_CLIENT}]]></imageExpression>
+            </image>
+            <image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+                <reportElement key="image-4" x="715" y="5" width="50" height="25" uuid="1c2e06d5-1906-4a2b-8d68-266a6791be35"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <imageExpression><![CDATA[$P{HAUT_LOGO_CLIENT}]]></imageExpression>
+            </image>
+            <textField isBlankWhenNull="false">
+                <reportElement key="textField-1" x="155" y="5" width="523" height="25" uuid="431fabdb-1d59-4299-98ac-d9842a8ca396"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+                    <font fontName="Arial" size="14" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{HAUT_SITE_CLIENT}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageHeader>
+    <columnHeader>
+        <band height="20" splitType="Stretch">
+            <rectangle radius="0">
+                <reportElement key="element-22" mode="Opaque" x="1" y="1" width="775" height="17" forecolor="#000000" backcolor="#999999" uuid="75a29639-157e-43fe-9d8c-85a22371d3df"/>
+                <graphicElement>
+                    <pen lineWidth="0.5" lineStyle="Solid"/>
+                </graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement key="element-90" x="0" y="1" width="293" height="16" forecolor="#FFFFFF" uuid="aaf96d65-e3ad-4ddf-92e7-df26706bc98d"/>
+                <box leftPadding="2" rightPadding="2">
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12"/>
+                </textElement>
+                <text><![CDATA[username]]></text>
+            </staticText>
+            <staticText>
+                <reportElement key="element-90" x="293" y="1" width="489" height="16" forecolor="#FFFFFF" uuid="8958b2b6-730e-465a-a140-7fd7b7c07cf3"/>
+                <box leftPadding="2" rightPadding="2">
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12"/>
+                </textElement>
+                <text><![CDATA[appUserRole]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="19" splitType="Stretch">
+            <line>
+                <reportElement key="line" positionType="FixRelativeToBottom" x="0" y="17" width="776" height="2" forecolor="#808080" uuid="88a46418-0c01-4eab-973e-202459afe254"/>
+                <graphicElement>
+                    <pen lineWidth="0.5" lineStyle="Solid"/>
+                </graphicElement>
+            </line>
+            <textField textAdjust="StretchHeight" pattern="" isBlankWhenNull="true">
+                <reportElement key="textField" x="0" y="1" width="293" height="15" uuid="ce05d67e-d65d-44f4-8aa6-230a7125f525"/>
+                <box leftPadding="2" rightPadding="2">
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{username}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight" pattern="" isBlankWhenNull="true">
+                <reportElement key="textField" x="293" y="1" width="489" height="15" uuid="4f2c64a8-e9bf-4eab-a7c7-df6d969fa539"/>
+                <box leftPadding="2" rightPadding="2">
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="12"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{appUserRole}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+    <columnFooter>
+        <band splitType="Stretch"/>
+    </columnFooter>
+    <pageFooter>
+        <band height="27" splitType="Stretch">
+            <textField pattern="" isBlankWhenNull="false">
+                <reportElement key="textField" x="565" y="4" width="170" height="19" uuid="bd2a72fa-2b4a-4f53-83d8-3c70e854dd30"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Right">
+                    <font fontName="Arial" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+                <reportElement key="textField" x="741" y="4" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="71032e78-3c07-484d-8946-824363166394"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Left" verticalAlignment="Top" rotation="None">
+                    <font fontName="Arial" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+                    <paragraph lineSpacing="Single"/>
+                </textElement>
+                <textFieldExpression><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+            <line>
+                <reportElement key="line" x="0" y="1" width="776" height="3" forecolor="#000000" uuid="3f430d64-bfc5-44e8-9234-f38b3b0746c4"/>
+                <graphicElement>
+                    <pen lineWidth="2.0" lineStyle="Solid"/>
+                </graphicElement>
+            </line>
+            <textField pattern="" isBlankWhenNull="false">
+                <reportElement key="textField" x="1" y="6" width="209" height="19" uuid="15b03522-d783-44f6-add5-081996d1d1ff"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font fontName="Arial" size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+            </textField>
+            <textField pattern="" isBlankWhenNull="false">
+                <reportElement key="textField-2" x="329" y="4" width="130" height="8" forecolor="#000000" backcolor="#FFFFFF" uuid="777a61c0-841b-4ead-b656-64d9212e4dc7"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="6" isBold="true" isUnderline="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Rapport I-PRESYST généré par :"]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="false">
+                <reportElement key="textField-3" x="329" y="12" width="130" height="8" uuid="d01c877d-f4a8-4b49-b64e-1abbcc1bf4ba"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Arial" size="6" isBold="true" isUnderline="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{BAS_AUTEUR}]]></textFieldExpression>
+            </textField>
+            <image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+                <reportElement key="image-5" x="486" y="4" width="60" height="15" uuid="25482158-dd57-4876-9e4f-d0c647756167"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <imageExpression><![CDATA[$P{BAS_LOGO_ACTIA}]]></imageExpression>
+            </image>
+        </band>
+    </pageFooter>
+    <summary>
+        <band splitType="Stretch"/>
+    </summary>
+</jasperReport>

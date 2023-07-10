@@ -7,13 +7,18 @@ import com.example.BackSpringBoot.exception.ResourceNotFoundException;
 import com.example.BackSpringBoot.model.*;
 import com.example.BackSpringBoot.repository.DossierHomologationRepository;
 import com.example.BackSpringBoot.repository.LigneNomenclatureRepository;
+import com.example.BackSpringBoot.service.ArticleService;
 import com.example.BackSpringBoot.service.DossierHomologationService;
+import com.example.BackSpringBoot.service.ReportService;
+import net.sf.jasperreports.engine.JRException;
 import org.apache.poi.util.IOUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
@@ -26,6 +31,9 @@ import java.util.List;
 @RequestMapping(path = "api/v1/ipersyst/dossierhomologation")
 public class DossierHomologationController {
     private  final DossierHomologationService dossierHomologationService;
+
+    @Autowired
+    private ReportService reportService;
     @Autowired
     private DossierHomologationRepository dossierHomologationRepository;
     @Autowired
@@ -49,6 +57,12 @@ public class DossierHomologationController {
         return new ResponseEntity<>(dshs, HttpStatus.OK) ;
     }
 
+    @GetMapping("/find/{id}")
+    public ResponseEntity<DossierHomologation> getDsh(@PathVariable long id){
+        DossierHomologation dossierHomologation = dossierHomologationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("dsh not exist with id: " + id));
+        return new ResponseEntity<>(dossierHomologation, HttpStatus.OK) ;
+    }
+
     @PostMapping("/add")
     public ResponseEntity<DossierHomologation> addDSH(@RequestBody DossierHomologation dossierHomologation){
         DossierHomologation newDSH = dossierHomologationService.addDossierHomologation(dossierHomologation);
@@ -57,15 +71,11 @@ public class DossierHomologationController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<DossierHomologation> updateDSH(@PathVariable long id, @RequestBody DossierHomologation dossierHomologation){
-        DossierHomologation updateDSH = dossierHomologationRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("DSH not exist with id: " + id));
-        updateDSH.setPkClientSite(dossierHomologation.getPkClientSite());
-        updateDSH.setDshReference(dossierHomologation.getDshReference());
-        updateDSH.setDshQteRex(dossierHomologation.getDshQteRex());
-        updateDSH.setPkEquivalence(dossierHomologation.getPkEquivalence());
-        //updateDSH.setPkEquivalence(dossierHomologation.getPkEquivalence().getPkArticleInitial());
-        updateDSH.setDshNiveauValidation(dossierHomologation.getDshNiveauValidation());
-        dossierHomologationRepository.save(updateDSH) ;
-        return new ResponseEntity<>(updateDSH, HttpStatus.OK) ;
+        DossierHomologation existingDsh = dossierHomologationRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("dSH does not exist with id: " + id));
+        BeanUtils.copyProperties(dossierHomologation, existingDsh, ArticleService.getNullPropertyNames(dossierHomologation));
+        DossierHomologation updatedDsh = dossierHomologationRepository.save(existingDsh);
+        return new ResponseEntity<>(updatedDsh, HttpStatus.OK);
     }
 
 
@@ -235,5 +245,22 @@ public class DossierHomologationController {
     @PostMapping("/basculement/{id_dsh}")
     public String callBasculementFunction(@PathVariable long id_dsh) {
         return basculementDao.callBasculementFunction(id_dsh, "marwa");
+    }
+
+    //Reports
+    @GetMapping("/report/fichedsh/{id}")
+    public ResponseEntity<byte[]> generateReport(@PathVariable Long id) throws IOException, JRException {
+        return reportService.exportRapportFicheDsh(id);
+    }
+
+    @GetMapping("/report/listedshs")
+    public ResponseEntity<byte[]> generateReportListeClt() throws IOException, JRException {
+        return reportService.exportRapportListeDsh();
+    }
+
+    @PostMapping("/addFromExcel")
+    public ResponseEntity<List<DossierHomologation>> uploadDshData(@RequestParam("file") MultipartFile file) throws IOException {
+        List<DossierHomologation> dshs = dossierHomologationService.addDossierHomologationsFromExcelFile(file);
+        return new ResponseEntity<>(dshs, HttpStatus.CREATED);
     }
 }

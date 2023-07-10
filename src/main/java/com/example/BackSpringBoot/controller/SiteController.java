@@ -3,13 +3,16 @@ package com.example.BackSpringBoot.controller;
 import com.example.BackSpringBoot.exception.ResourceNotFoundException;
 import com.example.BackSpringBoot.model.Site;
 import com.example.BackSpringBoot.repository.SiteRepository;
+import com.example.BackSpringBoot.service.ReportService;
 import com.example.BackSpringBoot.service.SiteService;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -17,6 +20,8 @@ import java.util.List;
 public class SiteController {
 
     private final SiteService siteService;
+    @Autowired
+    private ReportService reportService;
     @Autowired
     private SiteRepository siteRepository;
 
@@ -63,5 +68,16 @@ public class SiteController {
         siteRepository.delete(deleteSite);
         siteService.deleteSite(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //Reports
+    @GetMapping("/report/fichesite/{id}")
+    public ResponseEntity<byte[]> generateReport(@PathVariable Long id) throws IOException, JRException {
+        return reportService.exportRapportFicheSite(id);
+    }
+
+    @GetMapping("/report/listesites")
+    public ResponseEntity<byte[]> generateReportListeSite() throws IOException, JRException {
+        return reportService.exportRapportListeSite();
     }
 }

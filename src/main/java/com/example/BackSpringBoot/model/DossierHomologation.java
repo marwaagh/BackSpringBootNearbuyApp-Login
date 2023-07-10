@@ -1,6 +1,5 @@
 package com.example.BackSpringBoot.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.EqualsAndHashCode;
@@ -19,6 +18,9 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 public class DossierHomologation {
+    public static final String PROP_ID = "id";
+    public static final String PROP_DSH_NIVEAU_VALIDATION = "dshNiveauValidation";
+    public static final String PROP_PK_EQUIVALENCE = "pkEquivalence";
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY

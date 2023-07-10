@@ -1,5 +1,7 @@
 package com.example.BackSpringBoot.controller;
 
+import com.example.BackSpringBoot.exception.ResourceNotFoundException;
+import com.example.BackSpringBoot.model.Client;
 import com.example.BackSpringBoot.model.Fabricant;
 import com.example.BackSpringBoot.repository.FabricantRepository;
 import com.example.BackSpringBoot.service.FabricantService;
@@ -24,6 +26,12 @@ public class FabricantController {
     public ResponseEntity<List<Fabricant>> getAllFabricants(){
         List<Fabricant> fabricants = fabricantRepository.findAll();
         return new ResponseEntity<>(fabricants, HttpStatus.OK) ;
+    }
+
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Fabricant> getFabricant(@PathVariable long id){
+        Fabricant fabricant = fabricantRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("fabricant not exist with id: " + id));
+        return new ResponseEntity<>(fabricant, HttpStatus.OK) ;
     }
 
     @PostMapping("/add")
