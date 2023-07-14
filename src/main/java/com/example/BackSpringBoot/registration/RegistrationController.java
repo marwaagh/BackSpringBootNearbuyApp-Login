@@ -163,13 +163,13 @@ public class RegistrationController {
             AppUser user = (AppUser) authenticate.getPrincipal();
 
             // Check if user has ADMIN role
-            //if (user.getAppUserRole().equals(AppUserRole.USER.name())) {
+            if (user.getAppUserRole().equals(AppUserRole.USER.name())) {
                 return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,
                         jwtUtils.generateToken(user)
                 ).body(user);
-            //} else {
-           //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-           // }
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

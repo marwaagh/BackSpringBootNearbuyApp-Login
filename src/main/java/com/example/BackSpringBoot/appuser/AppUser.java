@@ -2,6 +2,7 @@ package com.example.BackSpringBoot.appuser;
 
 
 
+import com.example.BackSpringBoot.model.ClientSite;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
@@ -46,6 +47,9 @@ public class AppUser implements UserDetails {
     private AppUserRole appUserRole;
     private Boolean locked = false;
     private Boolean enabled = true;
+
+    @ManyToOne
+    private ClientSite pkClientSite;
 
     public AppUser(String username,
                    String firstName,
