@@ -1,5 +1,6 @@
 package com.example.BackSpringBoot.controller;
 
+import com.example.BackSpringBoot.appuser.AppUser;
 import com.example.BackSpringBoot.exception.ResourceNotFoundException;
 import com.example.BackSpringBoot.model.Article;
 import com.example.BackSpringBoot.model.CodeArticle;
@@ -50,5 +51,10 @@ public class CodeArticleController {
 
         CodeArticle updatedCodeArticle = codeArticleRepository.save(existingArticle);
         return new ResponseEntity<>(updatedCodeArticle, HttpStatus.OK);
+    }
+
+    @GetMapping("/findbyclst/{clientSiteId}")
+    public List<CodeArticle> getAppUsersByClientSiteId(@PathVariable Long clientSiteId) {
+        return codeArticleService.getCodeArticlesByClientSiteId(clientSiteId);
     }
 }

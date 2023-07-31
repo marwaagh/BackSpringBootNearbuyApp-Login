@@ -1,5 +1,6 @@
 package com.example.BackSpringBoot.controller;
 
+import com.example.BackSpringBoot.model.DossierEquivalence;
 import com.example.BackSpringBoot.model.Fabricant;
 import com.example.BackSpringBoot.model.Nomenclature;
 import com.example.BackSpringBoot.repository.FabricantRepository;
@@ -33,6 +34,11 @@ public class NomenclatureController {
     public ResponseEntity<Nomenclature> addNomenclatures(@RequestBody Nomenclature nomenclature){
         Nomenclature newnomenclature = nomenclatureService.addNomenclature(nomenclature);
         return new ResponseEntity<>(nomenclature, HttpStatus.CREATED) ;
+    }
+
+    @GetMapping("/findbyclst/{clientSiteId}")
+    public List<Nomenclature> getNomenclaturesByClientSiteId(@PathVariable Long clientSiteId) {
+        return nomenclatureService.getNomenclaturesByClientSiteId(clientSiteId);
     }
 
 }

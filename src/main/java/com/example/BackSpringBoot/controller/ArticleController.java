@@ -180,4 +180,9 @@ public class ArticleController {
         articleService.deleteArticle(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/findbyclst/{clientSiteId}")
+    public List<Article> getArticlesByClientSiteId(@PathVariable Long clientSiteId) {
+        return articleService.getArticlesByClientSiteId(clientSiteId);
+    }
 }

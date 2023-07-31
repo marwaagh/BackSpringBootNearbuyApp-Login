@@ -263,4 +263,9 @@ public class DossierHomologationController {
         List<DossierHomologation> dshs = dossierHomologationService.addDossierHomologationsFromExcelFile(file);
         return new ResponseEntity<>(dshs, HttpStatus.CREATED);
     }
+
+    @GetMapping("/findbyclst/{clientSiteId}")
+    public List<DossierHomologation> getDshsByClientSiteId(@PathVariable Long clientSiteId) {
+        return dossierHomologationService.getDshsByClientSiteId(clientSiteId);
+    }
 }

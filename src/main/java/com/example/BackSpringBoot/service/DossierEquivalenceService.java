@@ -2,9 +2,12 @@ package com.example.BackSpringBoot.service;
 
 import com.example.BackSpringBoot.exception.UserNotFoundException;
 import com.example.BackSpringBoot.model.Article;
+import com.example.BackSpringBoot.model.ClientSite;
 import com.example.BackSpringBoot.model.DossierEquivalence;
-import com.example.BackSpringBoot.repository.ArticleRepository;
+import com.example.BackSpringBoot.model.DossierHomologation;
+import com.example.BackSpringBoot.repository.ClientSiteRepository;
 import com.example.BackSpringBoot.repository.DossierEquivalenceRepository;
+import com.example.BackSpringBoot.repository.DossierHomologationRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +21,19 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DossierEquivalenceService {
     private final DossierEquivalenceRepository dossierEquivalenceRepository;
+    private final DossierHomologationRepository dossierHomologationRepository;
+    private final ClientSiteRepository clientSiteRepository;
 
     @Autowired
-    public DossierEquivalenceService(DossierEquivalenceRepository dossierEquivalenceRepository) {
+    public DossierEquivalenceService(DossierEquivalenceRepository dossierEquivalenceRepository, DossierHomologationRepository dossierHomologationRepository, ClientSiteRepository clientSiteRepository) {
         this.dossierEquivalenceRepository = dossierEquivalenceRepository;
+        this.dossierHomologationRepository = dossierHomologationRepository;
+        this.clientSiteRepository = clientSiteRepository;
     }
 
     public List<DossierEquivalence> addDossierEquivalencesFromExcelFile(MultipartFile file) throws IOException {
@@ -164,4 +172,21 @@ public class DossierEquivalenceService {
         }
         return deqs;
     }
+
+    public List<DossierEquivalence> getDossierEquivalencesByClientSiteId(Long clientSiteId) {
+        // Fetch the ClientSite object based on the provided clientSiteId
+        ClientSite clientSite = clientSiteRepository.findById(clientSiteId)
+                .orElseThrow(() -> new RuntimeException("ClientSite not found with ID: " + clientSiteId));
+
+        // Use the repository method to find all DossierHomologation associated with the ClientSite
+        List<DossierHomologation> dossierHomologations = dossierHomologationRepository.findAllByPkClientSite(clientSite);
+
+        // Now, we have the list of DossierHomologation entities associated with the ClientSite.
+        // We can iterate through them and collect the associated DossierEquivalence entities.
+
+        return dossierHomologations.stream()
+                .map(DossierHomologation::getPkEquivalence)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -2,11 +2,9 @@ package com.example.BackSpringBoot.service;
 
 import com.example.BackSpringBoot.email.EmailSender;
 import com.example.BackSpringBoot.exception.UserNotFoundException;
-import com.example.BackSpringBoot.model.ClientSite;
-import com.example.BackSpringBoot.model.DossierEquivalence;
-import com.example.BackSpringBoot.model.DossierHomologation;
-import com.example.BackSpringBoot.model.DossierHomologationRequest;
+import com.example.BackSpringBoot.model.*;
 import com.example.BackSpringBoot.registration.EmailValidator;
+import com.example.BackSpringBoot.repository.ClientSiteRepository;
 import com.example.BackSpringBoot.repository.DossierHomologationRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -26,14 +24,16 @@ import java.util.List;
 public class DossierHomologationService {
 
     private final DossierHomologationRepository dossierHomologationRepository;
+    private final ClientSiteRepository clientSiteRepository;
     private final EmailValidator emailValidator;
     private final EmailSender emailSender;
 
     String zipFilePath = "C:\\Users\\Admin\\Downloads\\Isipfe.zip" ;
 
     @Autowired
-    public DossierHomologationService(DossierHomologationRepository dossierHomologationRepository, EmailValidator emailValidator, EmailSender emailSender) {
+    public DossierHomologationService(DossierHomologationRepository dossierHomologationRepository, ClientSiteRepository clientSiteRepository, EmailValidator emailValidator, EmailSender emailSender) {
         this.dossierHomologationRepository = dossierHomologationRepository;
+        this.clientSiteRepository = clientSiteRepository;
         this.emailValidator = emailValidator;
         this.emailSender = emailSender;
     }
@@ -223,5 +223,15 @@ public class DossierHomologationService {
             deqs.add(deq);
         }
         return deqs;
+    }
+
+    public List<DossierHomologation> getDshsByClientSiteId(Long clientSiteId) {
+        // Fetch the ClientSite object based on the provided clientSiteId
+        // You should have a method in the ClientSiteRepository to fetch a ClientSite by ID.
+        ClientSite clientSite = clientSiteRepository.findById(clientSiteId)
+                .orElseThrow(() -> new RuntimeException("ClientSite not found with ID: " + clientSiteId));
+
+        // Use the repository method to find all AppUsers associated with the ClientSite
+        return dossierHomologationRepository.findAllByPkClientSite(clientSite);
     }
 }

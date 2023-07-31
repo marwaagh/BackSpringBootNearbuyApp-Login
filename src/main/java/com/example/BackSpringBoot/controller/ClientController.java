@@ -88,4 +88,10 @@ public class ClientController {
     public ResponseEntity<byte[]> generateReportListeClt() throws IOException, JRException {
         return reportService.exportRapportListeClt();
     }
+
+    @GetMapping("/clientsite/{clientSiteId}")
+    public Client getClientByClientSiteId(@PathVariable Long clientSiteId) {
+        return clientService.getClientByClientSiteId(clientSiteId)
+                .orElseThrow(() -> new RuntimeException("Client not found for the given ClientSite ID."));
+    }
 }

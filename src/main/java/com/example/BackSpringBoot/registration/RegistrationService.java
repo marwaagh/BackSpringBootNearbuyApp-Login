@@ -36,8 +36,9 @@ public class RegistrationService {
                         //request.getEmail(),
                         //request.getNumber(),
                         request.getPassword(),
-                        request.getAppUserRole()
-
+                        request.getAppUserRole(),
+                        request.getPkClientSite(),
+                        request.getAccessPerModules()
                 )
         );
 

@@ -260,7 +260,11 @@ public class DossierEquivalenceController {
             updateDEQ.setDsequivCommentairesValidateur(dossierEquivalence.getDsequivCommentairesValidateur()); //comments demandeur
             dossierEquivalenceRepository.save(updateDEQ);
             return new ResponseEntity<>(updateDEQ, HttpStatus.OK);
-
         }
+    }
+
+    @GetMapping("/findbyclst/{clientSiteId}")
+    public List<DossierEquivalence> getDossierEquivalencesByClientSiteId(@PathVariable Long clientSiteId) {
+        return dossierEquivalenceService.getDossierEquivalencesByClientSiteId(clientSiteId);
     }
 }

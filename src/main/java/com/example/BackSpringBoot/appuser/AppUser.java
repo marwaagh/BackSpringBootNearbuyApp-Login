@@ -2,6 +2,7 @@ package com.example.BackSpringBoot.appuser;
 
 
 
+import com.example.BackSpringBoot.model.AccessPerModule;
 import com.example.BackSpringBoot.model.ClientSite;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -13,9 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 @Data
 @EqualsAndHashCode
@@ -51,13 +50,23 @@ public class AppUser implements UserDetails {
     @ManyToOne
     private ClientSite pkClientSite;
 
+    @ManyToMany
+    @JoinTable(
+            name = "appuser_accesspermodule",
+            joinColumns = @JoinColumn(name = "appuser_id"),
+            inverseJoinColumns = @JoinColumn(name = "accesspermodule_id")
+    )
+    private Set<AccessPerModule> accessPerModules;
+
     public AppUser(String username,
                    String firstName,
                    String lastName,
-                  // String email,
+                   // String email,
                    //String number,
                    String password,
-                   AppUserRole appUserRole) {
+                   AppUserRole appUserRole,
+                   ClientSite pkClientSite,
+                   Set<AccessPerModule> accessPerModules) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -65,6 +74,8 @@ public class AppUser implements UserDetails {
         //this.number = number;
         this.password = password;
         this.appUserRole = appUserRole;
+        this.pkClientSite = pkClientSite;
+        this.accessPerModules = accessPerModules;
     }
 
     @JsonSerialize(contentUsing = GrantedAuthoritySerializer.class)

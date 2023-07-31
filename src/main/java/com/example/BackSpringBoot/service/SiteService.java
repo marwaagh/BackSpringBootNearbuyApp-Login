@@ -1,10 +1,12 @@
 package com.example.BackSpringBoot.service;
 
+import com.example.BackSpringBoot.model.Client;
 import com.example.BackSpringBoot.model.Site;
 import com.example.BackSpringBoot.repository.SiteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SiteService {
@@ -25,5 +27,9 @@ public class SiteService {
 
     public void deleteSite(long id) {
         siteRepository.deleteById(id);
+    }
+
+    public Optional<Site> getSiteByClientSiteId(Long clientSiteId) {
+        return siteRepository.findSiteByClientSiteId(clientSiteId);
     }
 }

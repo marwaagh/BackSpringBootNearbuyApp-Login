@@ -56,6 +56,12 @@ public class RegistrationController {
     private final JwtUtils jwtUtils;
 
 
+    @GetMapping("/appUser/findbyclst/{clientSiteId}")
+    public List<AppUser> getAppUsersByClientSiteId(@PathVariable Long clientSiteId) {
+        return appUserService.getAppUsersByClientSiteId(clientSiteId);
+    }
+
+
     //register user (add user)
     @PostMapping
     public String register(@RequestBody RegistrationRequest request) {
@@ -161,14 +167,19 @@ public class RegistrationController {
             );
 
             AppUser user = (AppUser) authenticate.getPrincipal();
-
             // Check if user has ADMIN role
-            if (user.getAppUserRole().equals(AppUserRole.USER.name())) {
+            if (user.getAppUserRole().equals(AppUserRole.ADMIN)) {
+                System.out.println("user has admin privilege");
+                return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,
+                        jwtUtils.generateToken(user)
+                ).body(user);
+            } else if(user.getAppUserRole().equals(AppUserRole.USER)) {
+                System.out.println("user has user s privilege");
                 return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,
                         jwtUtils.generateToken(user)
                 ).body(user);
             } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
             }
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

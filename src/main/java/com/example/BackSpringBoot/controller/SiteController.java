@@ -1,6 +1,7 @@
 package com.example.BackSpringBoot.controller;
 
 import com.example.BackSpringBoot.exception.ResourceNotFoundException;
+import com.example.BackSpringBoot.model.Client;
 import com.example.BackSpringBoot.model.Site;
 import com.example.BackSpringBoot.repository.SiteRepository;
 import com.example.BackSpringBoot.service.ReportService;
@@ -49,6 +50,12 @@ public class SiteController {
     public ResponseEntity<Site> addSite(@RequestBody Site site){
         Site newSite = siteService.addSite(site);
         return new ResponseEntity<>(newSite, HttpStatus.CREATED) ;
+    }
+
+    @GetMapping("/clientsite/{clientSiteId}")
+    public Site getClientByClientSiteId(@PathVariable Long clientSiteId) {
+        return siteService.getSiteByClientSiteId(clientSiteId)
+                .orElseThrow(() -> new RuntimeException("Client not found for the given ClientSite ID."));
     }
 
     @PutMapping("/update/{id}")

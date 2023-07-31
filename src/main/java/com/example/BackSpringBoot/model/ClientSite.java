@@ -1,5 +1,7 @@
 package com.example.BackSpringBoot.model;
 
+import com.example.BackSpringBoot.appuser.AppUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +24,6 @@ public class ClientSite {
     private Long id;
     @CreationTimestamp
     private Timestamp ts;
-
     private String appOwner;
     private String clstReference;
     private String clstReferenceMovex;
@@ -44,4 +46,8 @@ public class ClientSite {
     private Client pkClient;
     @ManyToOne
     private Site pkSite;
+
+    @OneToMany (cascade = CascadeType.ALL , mappedBy="pkClientSite")
+    @JsonIgnore
+    private Set<AppUser> appUsers;
 }

@@ -5,6 +5,7 @@ import com.example.BackSpringBoot.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientService {
@@ -25,6 +26,10 @@ public class ClientService {
 
     public void deleteClient(long id) {
         clientRepository.deleteClientById(id);
+    }
+
+    public Optional<Client> getClientByClientSiteId(Long clientSiteId) {
+        return clientRepository.findClientByClientSiteId(clientSiteId);
     }
 
 }
