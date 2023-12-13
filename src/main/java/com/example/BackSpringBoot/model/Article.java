@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "article")
+@Table(name = "ARTICLE")
 public class Article {
     @Id
     @GeneratedValue

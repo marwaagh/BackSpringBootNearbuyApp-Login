@@ -4,6 +4,7 @@ package com.example.BackSpringBoot.registration;
 import com.example.BackSpringBoot.appuser.AppUserRole;
 import com.example.BackSpringBoot.model.AccessPerModule;
 import com.example.BackSpringBoot.model.ClientSite;
+import com.example.BackSpringBoot.model.UserGroup;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class RegistrationRequest {
     private final String password;
     private final AppUserRole appUserRole;
     private final ClientSite pkClientSite;
+    private final UserGroup userGroup;
 
     private Set<AccessPerModule> accessPerModules;
 }

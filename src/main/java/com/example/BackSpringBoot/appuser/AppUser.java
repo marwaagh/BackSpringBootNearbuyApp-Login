@@ -4,6 +4,7 @@ package com.example.BackSpringBoot.appuser;
 
 import com.example.BackSpringBoot.model.AccessPerModule;
 import com.example.BackSpringBoot.model.ClientSite;
+import com.example.BackSpringBoot.model.UserGroup;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
@@ -20,6 +21,7 @@ import java.util.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
+@Table(name = "APPUSER")
 public class AppUser implements UserDetails {
 
 
@@ -48,6 +50,9 @@ public class AppUser implements UserDetails {
     private Boolean enabled = true;
 
     @ManyToOne
+    private UserGroup userGroup;
+
+    @ManyToOne
     private ClientSite pkClientSite;
 
     @ManyToMany
@@ -66,6 +71,7 @@ public class AppUser implements UserDetails {
                    String password,
                    AppUserRole appUserRole,
                    ClientSite pkClientSite,
+                   UserGroup userGroup,
                    Set<AccessPerModule> accessPerModules) {
         this.username = username;
         this.firstName = firstName;
@@ -75,6 +81,7 @@ public class AppUser implements UserDetails {
         this.password = password;
         this.appUserRole = appUserRole;
         this.pkClientSite = pkClientSite;
+        this.userGroup = userGroup;
         this.accessPerModules = accessPerModules;
     }
 

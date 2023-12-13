@@ -38,6 +38,20 @@ public class RegistrationService {
                         request.getPassword(),
                         request.getAppUserRole(),
                         request.getPkClientSite(),
+                        request.getUserGroup(),
+                        request.getAccessPerModules()
+                )
+        );
+        System.out.println(new AppUser(
+                        request.getUsername(),
+                        request.getFirstName(),
+                        request.getLastName(),
+                        //request.getEmail(),
+                        //request.getNumber(),
+                        request.getPassword(),
+                        request.getAppUserRole(),
+                        request.getPkClientSite(),
+                        request.getUserGroup(),
                         request.getAccessPerModules()
                 )
         );

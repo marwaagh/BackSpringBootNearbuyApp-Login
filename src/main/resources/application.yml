@@ -12,11 +12,19 @@ server:
 spring:
   datasource:
     password: postgres
-    url: jdbc:postgresql://localhost:5432/tesst
+    url: jdbc:postgresql://localhost:5432/database
     username: postgres
   jpa:
+
+
     hibernate:
-      ddl-auto: update #create-drop
+      ddl-auto: create-drop
+      naming:
+        physical-strategy=org:
+          hibernate:
+            boot:
+              model:
+                naming: PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

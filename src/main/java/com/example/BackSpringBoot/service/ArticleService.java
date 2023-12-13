@@ -106,5 +106,4 @@ public class ArticleService {
 
         return articles;
     }
-
 }

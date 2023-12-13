@@ -58,7 +58,7 @@ public class ArticleController {
                     "INNER JOIN famillecomposant ON article.id_famillecomposant = famillecomposant.id " +
                     "WHERE article.id_fabricant = ? AND article.id_famillecomposant = ? " +
                     "AND article.art_type_article = ?";
-            Object[] params = { idf, idfc, "Composant" };
+            Object[] params = { idf, idfc, "c" };
             List<Map<String, Object>> articlesData = jdbcTemplate.queryForList(sql, params);
             List<Article> articles = new ArrayList<>();
 
